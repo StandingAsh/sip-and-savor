@@ -1,4 +1,4 @@
-package com.project.demo.domain;
+package com.project.demo.members.domain;
 
 public class Member {
 

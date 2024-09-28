@@ -1,6 +1,7 @@
 package com.project.demo.repository;
 
-import com.project.demo.domain.Member;
+import com.project.demo.members.domain.Member;
+import com.project.demo.members.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

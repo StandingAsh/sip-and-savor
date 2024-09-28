@@ -1,4 +1,4 @@
-package com.project.demo.controller;
+package com.project.demo.members.controller;
 
 public class MemberForm {
 

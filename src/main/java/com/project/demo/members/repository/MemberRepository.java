@@ -1,6 +1,6 @@
-package com.project.demo.repository;
+package com.project.demo.members.repository;
 
-import com.project.demo.domain.Member;
+import com.project.demo.members.domain.Member;
 
 import java.util.List;
 import java.util.Optional;

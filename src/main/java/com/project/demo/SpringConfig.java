@@ -1,8 +1,8 @@
 package com.project.demo;
 
-import com.project.demo.repository.MemberRepository;
-import com.project.demo.repository.MemoryMemberRepository;
-import com.project.demo.service.MemberService;
+import com.project.demo.members.repository.MemberRepository;
+import com.project.demo.members.repository.MemoryMemberRepository;
+import com.project.demo.members.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
