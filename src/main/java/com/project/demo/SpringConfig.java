@@ -1,21 +1,11 @@
 package com.project.demo;
 
 import com.project.demo.members.repository.MemberRepository;
-import com.project.demo.members.repository.MemoryMemberRepository;
 import com.project.demo.members.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringConfig {
-
-    @Bean
-    public MemberService memberService() {
-        return new MemberService(memberRepository());
-    }
-
-    @Bean
-    public MemberRepository memberRepository() {
-        return new MemoryMemberRepository();
-    }
+    // none
 }

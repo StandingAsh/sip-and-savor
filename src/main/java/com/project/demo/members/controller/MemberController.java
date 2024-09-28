@@ -1,6 +1,6 @@
 package com.project.demo.members.controller;
 
-import com.project.demo.members.domain.Member;
+import com.project.demo.members.entity.Member;
 import com.project.demo.members.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

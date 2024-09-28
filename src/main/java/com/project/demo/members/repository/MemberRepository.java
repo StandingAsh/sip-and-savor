@@ -1,17 +1,11 @@
 package com.project.demo.members.repository;
 
-import com.project.demo.members.domain.Member;
+import com.project.demo.members.entity.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+@Repository
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-public interface MemberRepository {
-
-    Member save(Member member);
-
-    Optional<Member> findById(Long id);
-
-    Optional<Member> findByName(String name);
-
-    List<Member> findAll();
+    // JPA Repository
 }
