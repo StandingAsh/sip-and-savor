@@ -1,5 +1,6 @@
 package com.project.demo.members.service;
 
+import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.entity.Member;
 import com.project.demo.members.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,5 +12,15 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
+    public void join(MemberDTO memberDto) {
 
+        Member member = Member.builder()
+                .name(memberDto.getName())
+                .userId(memberDto.getUserId())
+                .password(memberDto.getPassword())
+                .email(memberDto.getEmail())
+                .build();
+
+        memberRepository.save(member);
+    }
 }

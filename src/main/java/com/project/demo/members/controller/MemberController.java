@@ -1,5 +1,6 @@
 package com.project.demo.members.controller;
 
+import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.entity.Member;
 import com.project.demo.members.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.List;
 @Controller
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @Autowired
     public MemberController(MemberService memberService) {
@@ -28,19 +29,18 @@ public class MemberController {
 
     @PostMapping("/members/new")
     public String create(MemberForm memberForm) {
-        Member member = new Member();
-        member.setName(memberForm.getName());
+        System.out.println("memberForm = " + memberForm.toString());
 
-        memberService.join(member);
+        MemberDTO memberDto = new MemberDTO();
+
+        memberDto.setName(memberForm.getName());
+        memberDto.setUserId(memberForm.getUserId());
+        memberDto.setPassword(memberForm.getPassword());
+        memberDto.setEmail(memberForm.getEmail());
+        memberService.join(memberDto);
+
+        System.out.println(memberDto);
 
         return "redirect:/";
-    }
-
-    // 회원 조회
-    @GetMapping("/members")
-    public String list(Model model) {
-        List<Member> members = memberService.findAllMembers();
-        model.addAttribute("members", members);
-        return "/members/memberList";
     }
 }
