@@ -53,4 +53,16 @@ public class MemberController {
         model.addAttribute("loginForm", new LoginForm());
         return "members/login";
     }
+
+    // 로그인 실패
+    @GetMapping("/members/login?error")
+    public String loginError() {
+        return "members/loginError";
+    }
+
+    // 로그인 성공
+    @GetMapping("/mypage")
+    public String myPage() {
+        return "mypage";
+    }
 }
