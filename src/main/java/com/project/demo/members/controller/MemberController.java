@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class MemberController {
 
     @PostMapping("/members/new")
     public String create(MemberForm memberForm) {
+
         System.out.println("memberForm = " + memberForm.toString());
 
         MemberDTO memberDto = new MemberDTO();
@@ -42,5 +45,17 @@ public class MemberController {
         System.out.println(memberDto);
 
         return "redirect:/";
+    }
+
+    // 로그인
+    @GetMapping("/members/login")
+    public String login() {
+        return "login";
+    }
+
+    @PostMapping("/members/login")
+    public String login(@ModelAttribute("loginForm") LoginForm loginForm, Model model) {
+        model.addAttribute("loginForm", new LoginForm());
+        return "mypage";
     }
 }

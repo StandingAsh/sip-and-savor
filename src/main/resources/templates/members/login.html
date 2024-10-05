@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div>
+    <h2>로그인</h2>
+    <form th:action="@{'/members/loginProc'}" method="post" name="loginForm">
+        <div>
+            <label for="userId">ID : </label>
+            <input type="text" id="userId" name="userId"/>
+        </div>
+        <br/>
+        <div>
+            <label for="password">비밀번호 : </label>
+            <input type="password" id="password" name="password"/>
+        </div>
+        <br/>
+        <button type="submit">로그인</button>
+    </form>
+</div>
+</body>
+</html>
+
+<style>
+    .error-class {
+        color: red;
+    }
+    .error-input {
+        border-color: red;
+    }
+</style>
