@@ -49,13 +49,8 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/members/login")
-    public String login() {
-        return "login";
-    }
-
-    @PostMapping("/members/login")
-    public String login(@ModelAttribute("loginForm") LoginForm loginForm, Model model) {
+    public String login(Model model) {
         model.addAttribute("loginForm", new LoginForm());
-        return "mypage";
+        return "members/login";
     }
 }
