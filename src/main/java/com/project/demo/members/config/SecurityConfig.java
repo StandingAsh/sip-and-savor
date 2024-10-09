@@ -18,12 +18,13 @@ public class SecurityConfig {
 
         // CRSF 인증 해제
         http.csrf(AbstractHttpConfigurer::disable);
+        http.sessionManagement((session) ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // URL 별 접근 권한 부여
-        http.authorizeRequests((auth) -> auth
-                .requestMatchers("/", "/members/new", "/members/login")
-                .permitAll()
-        );
+        http.authorizeHttpRequests((requests) ->
+                requests.requestMatchers("/", "/members/**").permitAll()
+                        .anyRequest().authenticated());
 
         // 로그인 설정
         http.formLogin((auth) -> auth.loginPage("/members/login")
