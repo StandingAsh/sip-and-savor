@@ -16,14 +16,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // CRSF 인증 해제
+        // CSRF 인증 해제
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement((session) ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // URL 별 접근 권한 부여
         http.authorizeHttpRequests((requests) ->
-                requests.requestMatchers("/", "/members/**").permitAll()
+                requests.requestMatchers("/", "/members/**", "/mypage")
+                        .permitAll()
                         .anyRequest().authenticated());
 
         // 로그인 설정
@@ -31,6 +32,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/members/loginProc")
                 .defaultSuccessUrl("/mypage")
                 .usernameParameter("userId")
+                .passwordParameter("password")
                 .permitAll()
         );
 
