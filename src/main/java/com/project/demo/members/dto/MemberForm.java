@@ -1,4 +1,4 @@
-package com.project.demo.members.controller;
+package com.project.demo.members.dto;
 
 import lombok.Getter;
 import lombok.Setter;
