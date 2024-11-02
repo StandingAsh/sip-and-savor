@@ -4,25 +4,33 @@ import com.project.demo.members.dto.LoginForm;
 import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.dto.MemberForm;
 import com.project.demo.members.service.MemberService;
+import com.project.demo.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
+    private final UserIdValidator userIdValidator;
 
-    @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    @InitBinder
+    public void validatorBinder(WebDataBinder binder) {
+        binder.addValidators(userIdValidator);
     }
 
     // 회원 등록
@@ -45,12 +53,12 @@ public class MemberController {
             return "/members/createMemberForm";
         }
 
-        MemberDTO memberDto = new MemberDTO();
-
-        memberDto.setName(memberForm.getName());
-        memberDto.setUserId(memberForm.getUserId());
-        memberDto.setPassword(memberForm.getPassword());
-        memberDto.setEmail(memberForm.getEmail());
+        MemberDTO memberDto = MemberDTO.builder()
+                .name(memberForm.getName())
+                .email(memberForm.getEmail())
+                .userId(memberForm.getUserId())
+                .password(memberForm.getPassword())
+                .build();
         memberService.join(memberDto);
 
         System.out.println(memberDto);
