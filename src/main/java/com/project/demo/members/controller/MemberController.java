@@ -4,11 +4,16 @@ import com.project.demo.members.dto.LoginForm;
 import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.dto.MemberForm;
 import com.project.demo.members.service.MemberService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class MemberController {
@@ -27,9 +32,18 @@ public class MemberController {
     }
 
     @PostMapping("/members/new")
-    public String create(MemberForm memberForm) {
+    public String create(@Valid MemberForm memberForm, Errors errors, Model model) {
 
-        System.out.println("memberForm = " + memberForm.toString());
+        if (errors.hasErrors()) {
+            model.addAttribute("memberForm", memberForm);
+
+            Map<String, String> errorMap = memberService.handleValidation(errors);
+            for(String key : errorMap.keySet()) {
+                model.addAttribute(key, errorMap.get(key));
+            }
+
+            return "/members/createMemberForm";
+        }
 
         MemberDTO memberDto = new MemberDTO();
 
@@ -49,12 +63,6 @@ public class MemberController {
     public String login(Model model) {
         model.addAttribute("loginForm", new LoginForm());
         return "members/login";
-    }
-
-    // 로그인 실패
-    @GetMapping("/members/login?error")
-    public String loginError() {
-        return "members/loginError";
     }
 
     // 로그인 성공
