@@ -4,9 +4,13 @@ import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.dto.MemberForm;
 import com.project.demo.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
+import java.util.Objects;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserIdValidator extends AbstractValidator<MemberForm> {
@@ -18,6 +22,8 @@ public class UserIdValidator extends AbstractValidator<MemberForm> {
         if(memberRepository.existsByUserId(form.getUserId())) {
             errors.rejectValue("userId", "user.id.exists"
                     , "이미 존재하는 아이디입니다.");
+            log.error(Objects.requireNonNull(errors.getFieldError())
+                    .getDefaultMessage());
         }
     }
 }
