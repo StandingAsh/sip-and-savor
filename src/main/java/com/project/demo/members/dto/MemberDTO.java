@@ -22,11 +22,4 @@ public class MemberDTO {
         this.password = password;
         this.email = email;
     }
-
-    @Override
-    public String toString() {
-        return "MemberDTO [" +
-                "name=" + name + ", userId=" + userId + ", email=" + email
-                + "]";
-    }
 }

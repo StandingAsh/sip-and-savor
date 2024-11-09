@@ -28,7 +28,7 @@ public class SecurityConfig {
 
         // URL 별 접근 권한 부여
         http.authorizeHttpRequests((requests) ->
-                requests.requestMatchers("/", "/members/**", "/mypage")
+                requests.requestMatchers("/**")
                         .permitAll()
                         .anyRequest().authenticated());
 

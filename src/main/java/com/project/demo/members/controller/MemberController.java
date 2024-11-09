@@ -8,11 +8,9 @@ import com.project.demo.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -44,8 +42,6 @@ public class MemberController {
     public String create(@Valid MemberForm memberForm, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            model.addAttribute("memberForm", memberForm);
-
             Map<String, String> errorMap = memberService.handleValidation(errors);
             for(String key : errorMap.keySet()) {
                 model.addAttribute(key, errorMap.get(key));
@@ -67,9 +63,7 @@ public class MemberController {
                 .build();
         memberService.join(memberDto);
 
-        System.out.println(memberDto);
-
-        return "redirect:/";
+        return "redirect:/members/login";
     }
 
     // 로그인

@@ -6,25 +6,28 @@
     <title>회원가입</title>
 </head>
 
-<body>
-<div class="container">
-    <form action="/members/new" method="post">
-        <div class="form-group">
-            <label for="name">이름</label>
-            <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+<body class="text-center">
+<form class="form-signin" action="/members/new" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">회원가입</h1>
 
-            <label for="userId">ID</label>
-            <input type="text" id="userId" name="userId" placeholder="ID를 입력하세요">
+    <!-- 이름 입력 -->
+    <label for="name" class="sr-only">이름</label>
+    <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
 
-            <label for="Password">비밀번호</label>
-            <input type="text" id="Password" name="password" placeholder="비밀번호를 입력하세요">
+    <!-- 아이디 입력 -->
+    <label for="userId" class="sr-only">ID</label>
+    <input type="text" id="userId" name="userId" placeholder="ID를 입력하세요">
 
-            <label for="Email">이메일주소</label>
-            <input type="text" id="Email" name="email" placeholder="이메을 주소를 입력하세요">
-        </div>
-        <button type="submit">등록</button>
-    </form>
-</div>
+    <!-- 비밀번호 입력 -->
+    <label for="Password" class="sr-only">비밀번호</label>
+    <input type="text" id="Password" name="password" placeholder="비밀번호를 입력하세요">
+
+    <!-- 이메일 입력 -->
+    <label for="Email" class="sr-only">이메일주소</label>
+    <input type="text" id="Email" name="email" placeholder="이메을 주소를 입력하세요">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">등록</button>
+</form>
 </body>
 
 </html>
