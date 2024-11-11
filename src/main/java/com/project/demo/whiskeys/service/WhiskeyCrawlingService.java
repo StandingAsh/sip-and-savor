@@ -11,7 +11,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WhiskeyCrawlingService {
@@ -41,34 +43,37 @@ public class WhiskeyCrawlingService {
                 // 보틀 정보 엘레멘트 저장
                 try {
                     WebElement spec = whiskey.findElement(By.className("s-goods-spec__list"));
-                    List<WebElement> specs = spec.findElements(By.tagName("span"));
+                    List<WebElement> specValues = spec.findElements(By.tagName("span"));
+                    List<WebElement> specKeys = spec.findElements(By.tagName("em"));
 
-                    // 패키지, 세트 등을 걸러주기 위한 조건문
-                    if (specs.size() < 5 || specs.size() > 6) {
-                        continue;
-                    }
+                    Map<String, String> specMap = new HashMap<>();
+                    for (int i = 0; i < specValues.size(); i++)
+                        specMap.put(specKeys.get(i).getText(), specValues.get(i).getText());
 
                     // 위스키 이름, 사진 url, 정보 문자열로 저장
                     String name = whiskey.findElement(By.cssSelector("div > div.s-goods__info > a > div.s-goods-title")).getText();
                     String imgUrl = whiskey.findElement(By.cssSelector("div.s-goods__thumbnail > a > div.s-goods-image > img")).getAttribute("src");
 
-                    String category = specs.get(0).getText();
-                    String abv = specs.get(1).getText();
-                    String country = specs.get(2).getText();
+                    // 스펙 정보 저장
+                    String category = "Unknown";
+                    String abv = "Unknown";
+                    String country = "Unknown";
                     String year = "NAS"; // 디폴트값
-                    String bottleSize;
+                    String bottleSize = "Unknown";
 
-                    // NAS 제품은 숙성년수 미표기, 따라서 스펙 정보 5개
-                    if (specs.size() == 5) {
-                        bottleSize = specs.get(3).getText();
-                    } else {
-                        year = specs.get(3).getText();
-                        bottleSize = specs.get(4).getText();
-                    }
+                    if (specMap.containsKey("종류"))
+                        category = specMap.get("종류");
+                    if (specMap.containsKey("도수"))
+                        abv = specMap.get("도수");
+                    if (specMap.containsKey("나라"))
+                        country = specMap.get("나라");
+                    if (specMap.containsKey("년 수"))
+                        year = specMap.get("년 수");
+                    if (specMap.containsKey("용량"))
+                        bottleSize = specMap.get("용량");
 
                     whiskeyRepository.save(new WhiskeyList(name, imgUrl, category, abv, country, year, bottleSize));
                 } catch (NoSuchElementException ignored) {
-                    continue;
                 }
             }
 
