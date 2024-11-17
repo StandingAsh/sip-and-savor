@@ -44,7 +44,15 @@ public class WhiskeyCrawlingService {
                 for (WebElement whiskey : whiskeyContainer.findElements(By.cssSelector("div.s-goods-grid.s-goods-grid--col-4 > ul > li"))) {
 
                     // 위스키 이름, 사진 url, 정보 문자열로 저장
-                    String name = whiskey.findElement(By.cssSelector("div > div.s-goods__info > a > div.s-goods-title")).getText();
+                    WebElement titleElement = whiskey.findElement(By.cssSelector("div > div.s-goods__info > a > div.s-goods-title"));
+                    String name;
+                    try {
+                        String strong = titleElement.findElement(By.cssSelector("strong")).getText();
+                        String title = titleElement.getText();
+                        name = title.substring(strong.length() + 1);
+                    } catch (NoSuchElementException e) {
+                        name = titleElement.getText();
+                    }
                     String imgUrl = whiskey.findElement(By.cssSelector("div.s-goods__thumbnail > a > div.s-goods-image > img")).getAttribute("src");
 
                     // 스펙 정보 초기화
