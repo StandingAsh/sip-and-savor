@@ -75,14 +75,14 @@ public class WhiskeyCrawlingService {
                         // 크롤링 정보 매핑
                         if (specMap.containsKey("종류")) {
                             category = specMap.get("종류");
-                            if(category.equals("진") || category.equals("Unknown")) {
+                            if (category.equals("진")) {
                                 break;
                             }
                         }
                         if (specMap.containsKey("도수")) {
                             abv = specMap.get("도수");
-                            String abvText = abv.substring(0,abv.length()-1);
-                            if((Float.parseFloat(abvText)<35.00) || abv.equals("Unknown")) {
+                            String abvText = abv.substring(0, abv.length() - 1);
+                            if ((Float.parseFloat(abvText) < 35.00)) {
                                 break;
                             }
                         }
