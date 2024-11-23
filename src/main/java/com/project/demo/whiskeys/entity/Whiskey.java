@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class WhiskeyList {
+public class Whiskey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +34,7 @@ public class WhiskeyList {
     @Column(nullable = false)
     private String bottleSize;
 
-    public WhiskeyList(String name, String imgUrl, String category, String abv, String country, String year, String bottleSize) {
+    public Whiskey(String name, String imgUrl, String category, String abv, String country, String year, String bottleSize) {
         this.name = name;
         this.imgUrl = imgUrl;
         this.category = category;

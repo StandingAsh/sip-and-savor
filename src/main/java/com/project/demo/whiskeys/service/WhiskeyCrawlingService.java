@@ -1,6 +1,6 @@
 package com.project.demo.whiskeys.service;
 
-import com.project.demo.whiskeys.entity.WhiskeyList;
+import com.project.demo.whiskeys.entity.Whiskey;
 import com.project.demo.whiskeys.repository.WhiskeyRepository;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -76,14 +76,14 @@ public class WhiskeyCrawlingService {
                         if (specMap.containsKey("종류")) {
                             category = specMap.get("종류");
                             if (category.equals("진")) {
-                                break;
+                                continue;
                             }
                         }
                         if (specMap.containsKey("도수")) {
                             abv = specMap.get("도수");
                             String abvText = abv.substring(0, abv.length() - 1);
                             if ((Float.parseFloat(abvText) < 35.00)) {
-                                break;
+                                continue;
                             }
                         }
                         if (specMap.containsKey("나라"))
@@ -93,9 +93,9 @@ public class WhiskeyCrawlingService {
                         if (specMap.containsKey("용량"))
                             bottleSize = specMap.get("용량");
 
-                        whiskeyRepository.save(new WhiskeyList(name, imgUrl, category, abv, country, year, bottleSize));
+                        whiskeyRepository.save(new Whiskey(name, imgUrl, category, abv, country, year, bottleSize));
                     } catch (NoSuchElementException ignored) {
-                        whiskeyRepository.save(new WhiskeyList(name, imgUrl, category, abv, country, year, bottleSize));
+                        whiskeyRepository.save(new Whiskey(name, imgUrl, category, abv, country, year, bottleSize));
                     }
                 }
 
