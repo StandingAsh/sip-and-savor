@@ -21,8 +21,6 @@ public class WhiskeyController {
         List<Whiskey> whiskeyList = whiskeyService.findAllWhiskeys();
         model.addAttribute("whiskeyList", whiskeyList);
 
-        System.out.println("whiskeyList = " + whiskeyList.size());
-
         return "whiskeys/whiskeyList";
     }
 }
