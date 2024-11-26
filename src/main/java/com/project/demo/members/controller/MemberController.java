@@ -48,11 +48,12 @@ public class MemberController {
                 model.addAttribute(key, errorMap.get(key));
             }
 
-            return "/members/createMemberForm";
+            return "members/createMemberForm";
         }
 
         userIdValidator.validate(memberForm, errors);
         if(errors.hasErrors()) {
+            model.addAttribute(errors.getFieldErrors());
             return "members/createMemberForm";
         }
 
@@ -64,7 +65,7 @@ public class MemberController {
                 .build();
         memberService.join(memberDto);
 
-        return "redirect:/members/login";
+        return "redirect:/";
     }
 
     // 로그인

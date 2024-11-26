@@ -59,7 +59,7 @@ public class WhiskeyCrawlingService {
                     String category = "Unknown";
                     String abv = "Unknown";
                     String country = "Unknown";
-                    String year = "NAS"; // 디폴트값
+                    String year = "NAS"; // No Age Statement
                     String bottleSize = "Unknown";
 
                     // 위스키 정보 엘리먼트 크롤링
