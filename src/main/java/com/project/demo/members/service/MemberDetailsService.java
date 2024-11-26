@@ -1,6 +1,6 @@
 package com.project.demo.members.service;
 
-import com.project.demo.members.dto.MemberDetails;
+import com.project.demo.members.dto.UserDetailsAdapter;
 import com.project.demo.members.entity.Member;
 import com.project.demo.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,6 @@ public class MemberDetailsService implements UserDetailsService {
         if (member == null)
             return null;
 
-        return new MemberDetails(member);
+        return new UserDetailsAdapter(member);
     }
 }

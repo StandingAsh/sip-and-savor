@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,7 +76,9 @@ public class MemberController {
 
     // 로그인 성공
     @GetMapping("/mypage")
-    public String myPage() {
+    public String myPage(Model model, Principal principal) {
+        
+
         return "mypage";
     }
 }

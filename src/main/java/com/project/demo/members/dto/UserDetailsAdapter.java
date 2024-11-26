@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class MemberDetails implements UserDetails {
+public class UserDetailsAdapter implements UserDetails {
 
     private final Member member;
 
-    public MemberDetails(Member member) {
+    public UserDetailsAdapter(Member member) {
         this.member = member;
     }
 
