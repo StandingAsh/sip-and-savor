@@ -5,7 +5,6 @@ import com.project.demo.whiskeys.repository.WhiskeyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,4 +16,6 @@ public class WhiskeyService {
     public List<Whiskey> findAllWhiskeys() {
         return whiskeyRepository.findAll();
     }
+
+    public Whiskey getWhiskeysById(Long id) {return whiskeyRepository.findById(id).orElse(null);}
 }

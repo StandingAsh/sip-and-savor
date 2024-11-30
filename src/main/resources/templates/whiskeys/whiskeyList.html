@@ -30,7 +30,7 @@
         </thead>
         <tbody>
         <tr th:each="list : ${whiskeyList}">
-            <td th:text="${list.name}"></td>
+            <td><a th:href="@{/whiskeys/{id}(id=${list.id})}" th:text="${list.name}"></a></td>
             <td><img th:src="${list.imgUrl}" width="100" height="100" alt="이미지 표시 불가"></td>
             <td th:text="${list.category}"></td>
             <td th:text="${list.abv}"></td>
