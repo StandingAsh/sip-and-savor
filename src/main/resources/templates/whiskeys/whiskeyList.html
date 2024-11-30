@@ -1,24 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Whiskey List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .layout {
+            width: 80%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #4CAF50;
+        }
+
+        .table-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
+        }
+
+    </style>
 </head>
-<style>
-    .layout {
-        width: 1000px;
-        margin: 0 auto;
-        margin-top: 40px;
-    }
-</style>
+
 <body>
 
 <div class="layout">
+    <h2 class="table-header">Whiskey List</h2>
     <table>
         <thead>
-        <tr th:align="left">
+        <tr>
             <th>이름</th>
             <th>이미지</th>
             <th>종류</th>
@@ -31,7 +94,7 @@
         <tbody>
         <tr th:each="list : ${whiskeyList}">
             <td><a th:href="@{/whiskeys/{id}(id=${list.id})}" th:text="${list.name}"></a></td>
-            <td><img th:src="${list.imgUrl}" width="100" height="100" alt="이미지 표시 불가"></td>
+            <td><img th:src="${list.imgUrl}" alt="이미지 표시 불가"></td>
             <td th:text="${list.category}"></td>
             <td th:text="${list.abv}"></td>
             <td th:text="${list.year}"></td>

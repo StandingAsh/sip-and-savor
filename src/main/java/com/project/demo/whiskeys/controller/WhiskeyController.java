@@ -26,8 +26,8 @@ public class WhiskeyController {
     }
 
     @GetMapping("/whiskeys/{id}")
-    public String displayDetails(@PathVariable Long id, Model model) {
-        model.addAttribute("whiskey", whiskeyService.getWhiskeysById(id));
+    public String displayDetails(@PathVariable(name = "id") Long id, Model model) {
+        model.addAttribute("whiskey", whiskeyService.getWhiskeyById(id));
         return "whiskeys/whiskeyDetail";
     }
 }

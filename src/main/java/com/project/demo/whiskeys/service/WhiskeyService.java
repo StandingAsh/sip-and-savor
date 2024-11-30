@@ -17,5 +17,5 @@ public class WhiskeyService {
         return whiskeyRepository.findAll();
     }
 
-    public Whiskey getWhiskeysById(Long id) {return whiskeyRepository.findById(id).orElse(null);}
+    public Whiskey getWhiskeyById(Long id) {return whiskeyRepository.findById(id).orElse(null);}
 }
