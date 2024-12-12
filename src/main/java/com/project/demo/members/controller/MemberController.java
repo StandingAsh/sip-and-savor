@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class MemberController {
 
         if (errors.hasErrors()) {
             Map<String, String> errorMap = memberService.handleValidation(errors);
-            for(String key : errorMap.keySet()) {
+            for (String key : errorMap.keySet()) {
                 model.addAttribute(key, errorMap.get(key));
             }
 
@@ -52,7 +53,7 @@ public class MemberController {
         }
 
         userIdValidator.validate(memberForm, errors);
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             model.addAttribute(errors.getFieldErrors());
             return "members/createMemberForm";
         }
@@ -70,15 +71,19 @@ public class MemberController {
 
     // 로그인
     @GetMapping("/members/login")
-    public String login(Model model) {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "exception", required = false) String exception,
+                        Model model) {
         model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
         return "members/login";
     }
 
     // 로그인 성공
     @GetMapping("/mypage")
     public String myPage(Model model, Principal principal) {
-        
+
 
         return "mypage";
     }

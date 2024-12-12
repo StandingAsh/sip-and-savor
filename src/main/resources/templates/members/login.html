@@ -86,6 +86,9 @@
 <div class="login-container">
     <h2>로그인</h2>
     <form th:action="@{'/members/loginProc'}" method="post" name="loginForm">
+        <div th:if="error">
+            <p id="valid" style="color:red;"><a th:text="${exception}"></a></p>
+        </div>
         <!-- ID 입력 -->
         <div class="mb-3">
             <label for="userId" class="form-label">ID</label>
