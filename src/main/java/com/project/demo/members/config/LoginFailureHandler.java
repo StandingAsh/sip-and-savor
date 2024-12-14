@@ -22,11 +22,9 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         String errorMessage;
 
         if (exception instanceof BadCredentialsException) {
-            errorMessage = "Bad credentials";
-        } else if (exception instanceof UsernameNotFoundException) {
-            errorMessage = "Username not found";
+            errorMessage = "아이디 혹은 비밀번호가 일치하지 않습니다.";
         } else if (exception instanceof InternalAuthenticationServiceException) {
-            errorMessage = "Internal Authentication Service";
+            errorMessage = "내부 시스템 문제로 인하여 로그인에 실패하였습니다.";
         } else {
             errorMessage = exception.getMessage();
         }

@@ -20,7 +20,7 @@ public class UserDetailsAdapterService implements UserDetailsService {
 
         Member member = memberRepository.findByUserId(username);
         if (member == null)
-            return null;
+            throw new UsernameNotFoundException(username);
 
         return new UserDetailsAdapter(member);
     }

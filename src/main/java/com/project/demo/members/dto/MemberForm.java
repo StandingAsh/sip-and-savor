@@ -14,7 +14,7 @@ public class MemberForm {
     private String name;
 
     @NotBlank(message = "아이디를 입력해주세요.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$"
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,15}$"
             , message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
     private String userId;
 
