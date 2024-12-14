@@ -75,15 +75,21 @@
 <body>
 <div class="form-container">
     <h1>회원가입</h1>
-    <form action="/members/new" method="post">
+    <form action="/members/new" method="post" th:object="${memberForm}">
         <!-- 이름 입력 -->
         <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" required>
 
         <!-- 아이디 입력 -->
-        <input type="text" id="userId" name="userId" class="form-control" placeholder="ID를 입력하세요" required>
+        <input type="text" th:field="*{userId}" id="userId" name="userId" class="form-control" placeholder="ID를 입력하세요" required>
+        <div th:if="${#fields.hasErrors('userId')}">
+            <p style="color:red;"><a th:errors="*{userId}"></a></p>
+        </div>
 
         <!-- 비밀번호 입력 -->
-        <input type="password" id="Password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+        <input type="password" th:field="*{password}" id="Password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+        <div th:if="${#fields.hasErrors('password')}">
+            <p style="color:red;"><a th:errors="*{password}"></a></p>
+        </div>
 
         <!-- 이메일 입력 -->
         <input type="email" id="Email" name="email" class="form-control" placeholder="이메일 주소를 입력하세요" required>

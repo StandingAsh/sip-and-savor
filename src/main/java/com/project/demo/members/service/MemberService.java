@@ -53,17 +53,4 @@ public class MemberService {
 
         return memberDTOs;
     }
-
-    // 유효성 검사
-    public Map<String, String> handleValidation(Errors errors) {
-
-        Map<String, String> errorMap = new HashMap<>();
-
-        for (FieldError fieldError : errors.getFieldErrors()) {
-            errorMap.put(String.format("valid_%s", fieldError.getField())
-                    , fieldError.getDefaultMessage());
-        }
-
-        return errorMap;
-    }
 }

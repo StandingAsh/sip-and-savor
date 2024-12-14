@@ -10,12 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -36,28 +34,27 @@ public class MemberController {
 
     // 회원 등록
     @GetMapping("/members/new")
-    public String createForm() {
+    public String createForm(Model model) {
+        model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
     }
 
     @PostMapping("/members/new")
-    public String create(@Valid MemberForm memberForm, Errors errors, Model model) {
+    public String create(@Valid MemberForm memberForm, BindingResult result, Model model, Errors errors) {
 
-        if (errors.hasErrors()) {
-            Map<String, String> errorMap = memberService.handleValidation(errors);
-            for (String key : errorMap.keySet()) {
-                model.addAttribute(key, errorMap.get(key));
-            }
-
+        // 정규식 검사
+        if (result.hasErrors()) {
             return "members/createMemberForm";
         }
 
+        // 중복 아이디 검사
         userIdValidator.validate(memberForm, errors);
         if (errors.hasErrors()) {
             model.addAttribute(errors.getFieldErrors());
             return "members/createMemberForm";
         }
 
+        // 회원가입
         MemberDTO memberDto = MemberDTO.builder()
                 .name(memberForm.getName())
                 .email(memberForm.getEmail())
