@@ -1,5 +1,6 @@
 package com.project.demo.members.service;
 
+import com.project.demo.members.dto.DeleteForm;
 import com.project.demo.members.dto.MemberDTO;
 import com.project.demo.members.entity.Member;
 import com.project.demo.members.repository.MemberRepository;
@@ -36,8 +37,15 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    // 회원탈퇴
+    public void delete(DeleteForm deleteForm) {
+        Member member = memberRepository.findByUserId(deleteForm.getUserId());
+        memberRepository.delete(member);
+    }
+
     // 회원 목록 조회
     public List<MemberDTO> findAllMembers() {
+
         List<Member> members = memberRepository.findAll();
         List<MemberDTO> memberDTOs = new ArrayList<>();
 

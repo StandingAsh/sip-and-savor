@@ -7,7 +7,6 @@ import com.project.demo.members.service.MemberService;
 import com.project.demo.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,13 +14,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -75,13 +69,5 @@ public class MemberController {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
         return "members/login";
-    }
-
-    // 로그인 성공
-    @GetMapping("/mypage")
-    public String myPage(Model model, Principal principal) {
-
-
-        return "mypage";
     }
 }

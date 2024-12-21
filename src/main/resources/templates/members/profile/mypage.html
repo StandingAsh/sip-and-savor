@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        a, button {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        a {
+            color: #ffffff;
+            background-color: #007BFF;
+            border: 1px solid #007BFF;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: #ffffff;
+            border: 1px solid #dc3545;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>My Page</h1>
+    <p><span th:text="${user.getUsername()}"></span>님, 환영합니다!</p>
+    <a href="/members/logout">로그아웃</a>
+    <a href="/mypage/change-info">회원 정보 수정</a>
+    <a href="/mypage/delete">회원 탈퇴</a>
+</div>
+
+<script>
+    function confirmDeletion() {
+        if (confirm("정말로 탈퇴하시겠습니까?")) {
+            window.location.href = "/members/delete";
+        }
+    }
+</script>
+</body>
+</html>
