@@ -4,9 +4,13 @@
 회원 탈퇴
 <div class="delete-container">
     <h2>로그인</h2>
-    <form th:action="@{'/members/loginProc'}" method="post" name="deleteForm">
+    <form action="/mypage/mypage/createDeleteForm" method="post" th:object="deleteForm">
+        <div th:if="exception">
+            <p id="authenticated" style="color:red;"><a th:text="${exception}"></a></p>
+        </div>
+
         <div th:if="error">
-            <p id="valid" style="color:red;"><a th:text="${exception}"></a></p>
+            <p id="pwMatches" style="color:red;"><a th:text="${error}"></a></p>
         </div>
 
         <!-- 비밀번호 입력 -->

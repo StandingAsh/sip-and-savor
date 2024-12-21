@@ -68,6 +68,7 @@ public class MemberController {
         model.addAttribute("loginForm", new LoginForm());
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
+
         return "members/login";
     }
 }

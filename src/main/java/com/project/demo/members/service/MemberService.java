@@ -39,6 +39,8 @@ public class MemberService {
 
     // 회원탈퇴
     public void delete(DeleteForm deleteForm) {
+
+        // todo: 비밀번호 검사, 예외 던지기
         Member member = memberRepository.findByUserId(deleteForm.getUserId());
         memberRepository.delete(member);
     }

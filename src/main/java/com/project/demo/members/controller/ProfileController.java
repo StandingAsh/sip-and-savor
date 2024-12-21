@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -38,6 +37,7 @@ public class ProfileController {
         return "/members/profile/mypage";
     }
 
+    // 회원 정보 수정
     @GetMapping("/mypage/change-info")
     public String changeInfo(Model model) {
         try {
@@ -58,6 +58,7 @@ public class ProfileController {
         return "/members/profile/changeInfo";
     }
 
+    // 회원 탈퇴
     @GetMapping("/mypage/createDeleteForm")
     public String createDeleteForm(Model model) {
         model.addAttribute("deleteForm", new DeleteForm());
@@ -72,12 +73,18 @@ public class ProfileController {
                     SecurityContextHolder.getContext().getAuthentication();
             deleteForm.setUserId(auth.getName());
 
-
-
-            memberService.delete(deleteForm);
-            SecurityContextHolder.getContext().setAuthentication(null);
+            // todo: 비밀번호 검사
+            try {
+                memberService.delete(deleteForm);
+                SecurityContextHolder.getContext().setAuthentication(null);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                model.addAttribute("error", e.getMessage());
+                return "/members/profile/createDeleteForm";
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
+            model.addAttribute("exception", e.getMessage());
             return "/members/profile/createDeleteForm";
         }
 
