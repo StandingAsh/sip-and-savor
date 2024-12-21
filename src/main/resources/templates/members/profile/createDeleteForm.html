@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+회원 탈퇴
+<div class="delete-container">
+    <h2>로그인</h2>
+    <form th:action="@{'/members/loginProc'}" method="post" name="deleteForm">
+        <div th:if="error">
+            <p id="valid" style="color:red;"><a th:text="${exception}"></a></p>
+        </div>
+
+        <!-- 비밀번호 입력 -->
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+            <!-- 오류 메시지 (동적 처리 가능) -->
+            <!--            <div class="error-class" th:if="${#fields.hasErrors('password')}" th:text="${#fields.error('password')}">비밀번호를 입력해주세요.</div>-->
+        </div>
+
+        <!-- 탈퇴 버튼 -->
+        <button type="submit" class="btn btn-primary">탈퇴</button>
+        <a href="/mypage">돌아가기</a>
+    </form>
+</div>
+</body>
+</html>
