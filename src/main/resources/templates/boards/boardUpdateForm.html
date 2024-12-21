@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 작성 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">게시판 수정</h1>
+    <form method="post" th:action="@{/boards/boardUpdate/{id}(id=${board.id})}">
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="table-primary" style="width: 20%;">작성자</td>
+                <td><input type="text" name="writer" class="form-control" th:value="${board.writer}"></td>
+            </tr>
+            <tr>
+                <td class="table-primary">이메일</td>
+                <td><input type="email" name="email" class="form-control" th:value="${board.email}"></td>
+            </tr>
+            <tr>
+                <td class="table-primary">제목</td>
+                <td><input type="text" name="title" class="form-control" th:value="${board.title}"></td>
+            </tr>
+            <tr>
+                <td class="table-primary">내용</td>
+                <td><textarea rows="5" class="form-control" name="content" th:text="${board.content}"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center">
+                    <button type="submit" class="btn btn-primary">수정하기</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">게시글 리스트</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a th:href="@{/boards/writeBoard}" class="btn btn-success">글 작성하기</a>
+    </div>
+    <table class="table table-striped table-hover text-center">
+        <thead class="table-primary">
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">작성자</th>
+            <th scope="col">이메일</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성일</th>
+            <th scope="col">내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boardList}">
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.writer}"></td>
+            <td th:text="${board.email}"></td>
+            <td><a th:href="@{/boards/boardView/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
+            <td th:text="${board.reg_date}"></td>
+            <td th:text="${board.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 페이징 -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${startPage > 1} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/boards/boardList(page=${startPage-2})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- 페이지 번호 -->
+            <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                th:classappend="${page == nowPage} ? 'active' : ''">
+                <a class="page-link" th:href="@{/boards/boardList(page=${page-1})}" th:text="${page}"></a>
+            </li>
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${endPage < boardList.totalPages} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/boards/boardList(page=${endPage})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 상세페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">게시판 상세페이지</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">작성자</th>
+            <th scope="col">이메일</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성일</th>
+            <th scope="col">내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.writer}"></td>
+            <td th:text="${board.email}"></td>
+            <td th:text="${board.title}"></td>
+            <td th:text="${board.reg_date}"></td>
+            <td th:text="${board.content}"></td>
+        </tr>
+        <tr>
+            <td th:colspan="6" class="text-center">
+                <a th:href="@{/boards/boardDelete(id=${board.id})}" class="btn btn-danger me-2">글 삭제하기</a>
+                <a th:href="@{/boards/modify/{id}(id=${board.id})}" class="btn btn-warning">글 수정하기</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
