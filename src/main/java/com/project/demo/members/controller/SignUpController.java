@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Slf4j
 @Controller
-public class HomeController {
+public class SignUpController {
 
     @GetMapping("/")
+    public String home() {
+        return "home";
+    }
+
+    @GetMapping("/sign-up")
     public String home(Model model) {
         try {
             Authentication auth =
@@ -22,6 +27,6 @@ public class HomeController {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return "home";
+        return "members/signUp";
     }
 }

@@ -14,11 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final String[] openURLs = {
-            "/", "/members/**", "/whiskeys", "/whiskeys/**", "/crawling"
+            "/", "/members/**", "/whiskeys", "/whiskeys/**", "/crawling", "/boards/**", "/sign-up"
     };
 
     private final String[] userOnlyURLs = {
-            "/mypage", "mypage/**"
+            "/mypage", "/mypage/**"
     };
 
     @Bean
