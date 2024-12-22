@@ -1,28 +1,103 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 탈퇴</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .delete-container {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .delete-container h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #343a40;
+        }
+        .delete-container .form-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #495057;
+        }
+        .delete-container .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .delete-container .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            background-color: #007bff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .delete-container .btn:hover {
+            background-color: #0056b3;
+        }
+        .delete-container a {
+            display: block;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .delete-container a:hover {
+            text-decoration: underline;
+        }
+        .delete-container p {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .delete-container #authenticated, .delete-container #pwMatches {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
 <body>
-회원 탈퇴
 <div class="delete-container">
-    <h2>로그인</h2>
-    <form action="/mypage/mypage/createDeleteForm" method="post" th:object="deleteForm">
+    <h2>회원 탈퇴</h2>
+    <form action="/mypage/delete" method="post" th:object="${deleteForm}">
         <div th:if="exception">
-            <p id="authenticated" style="color:red;"><a th:text="${exception}"></a></p>
+            <p id="authenticated" style="color:red;" th:text="${exception}"></p>
         </div>
 
         <div th:if="error">
-            <p id="pwMatches" style="color:red;"><a th:text="${error}"></a></p>
+            <p id="pwMatches" style="color:red;" th:text="${error}"></p>
         </div>
 
         <!-- 비밀번호 입력 -->
         <div class="mb-3">
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
-            <!-- 오류 메시지 (동적 처리 가능) -->
-            <!--            <div class="error-class" th:if="${#fields.hasErrors('password')}" th:text="${#fields.error('password')}">비밀번호를 입력해주세요.</div>-->
         </div>
 
         <!-- 탈퇴 버튼 -->
-        <button type="submit" class="btn btn-primary">탈퇴</button>
+        <button type="submit" class="btn">탈퇴</button>
         <a href="/mypage">돌아가기</a>
     </form>
 </div>

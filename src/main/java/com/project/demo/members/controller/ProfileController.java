@@ -59,21 +59,22 @@ public class ProfileController {
     }
 
     // 회원 탈퇴
-    @GetMapping("/mypage/createDeleteForm")
+    @GetMapping("/mypage/delete")
     public String createDeleteForm(Model model) {
         model.addAttribute("deleteForm", new DeleteForm());
         return "/members/profile/createDeleteForm";
     }
 
-    @PostMapping("/mypage/createDeleteForm")
+    @PostMapping("/mypage/delete")
     public String createDeleteForm(DeleteForm deleteForm, Model model) {
 
+        // 로그인 안돼있는 경우 예외 발생
         try {
             Authentication auth =
                     SecurityContextHolder.getContext().getAuthentication();
             deleteForm.setUserId(auth.getName());
 
-            // todo: 비밀번호 검사
+            // 비밀번호 일치하지 않는 경우 예외 발생
             try {
                 memberService.delete(deleteForm);
                 SecurityContextHolder.getContext().setAuthentication(null);

@@ -66,13 +66,13 @@
             background-color: #0056b3;
         }
 
-        button {
+        .delete a {
             background-color: #dc3545;
             color: #ffffff;
             border: 1px solid #dc3545;
         }
 
-        button:hover {
+        .delete a:hover {
             background-color: #c82333;
         }
     </style>
@@ -83,7 +83,9 @@
     <p><span th:text="${user.getUsername()}"></span>님, 환영합니다!</p>
     <a href="/members/logout">로그아웃</a>
     <a href="/mypage/change-info">회원 정보 수정</a>
-    <a href="/mypage/delete">회원 탈퇴</a>
+    <div class="delete">
+        <a href="/mypage/delete">회원 탈퇴</a>
+    </div>
 </div>
 
 <script>

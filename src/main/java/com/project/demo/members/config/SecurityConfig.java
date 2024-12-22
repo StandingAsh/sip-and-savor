@@ -39,7 +39,7 @@ public class SecurityConfig {
         // 로그인 설정
         http.formLogin((auth) -> auth.loginPage("/members/login")
                 .loginProcessingUrl("/members/loginProc")
-                .defaultSuccessUrl("/mypage")
+                .defaultSuccessUrl("/")
                 .usernameParameter("userId")
                 .passwordParameter("password")
                 .failureHandler(new LoginFailureHandler())

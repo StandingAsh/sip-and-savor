@@ -38,10 +38,16 @@ public class MemberService {
     }
 
     // 회원탈퇴
-    public void delete(DeleteForm deleteForm) {
+    public void delete(DeleteForm deleteForm) throws Exception {
 
         // todo: 비밀번호 검사, 예외 던지기
         Member member = memberRepository.findByUserId(deleteForm.getUserId());
+        if (member == null)
+            throw new Exception("회원 정보를 찾을 수 없습니다.");
+
+        if (!passwordEncoder.matches(deleteForm.getPassword(), member.getPassword()))
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+
         memberRepository.delete(member);
     }
 
