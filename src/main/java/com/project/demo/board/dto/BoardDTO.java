@@ -14,15 +14,15 @@ public class BoardDTO {
     private String writer;
     private String email;
     private String title;
-    private LocalDate reg_date;
+    private LocalDate regDate;
     private String content;
 
     @Builder
-    public BoardDTO(String writer, String email, String title, LocalDate reg_date, String content) {
+    public BoardDTO(String writer, String email, String title, LocalDate regDate, String content) {
         this.writer = writer;
         this.email = email;
         this.title = title;
-        this.reg_date = reg_date;
+        this.regDate = regDate;
         this.content = content;
     }
 
@@ -31,7 +31,7 @@ public class BoardDTO {
                 .writer(board.getWriter())
                 .email(board.getEmail())
                 .title(board.getTitle())
-                .reg_date(board.getReg_date())
+                .regDate(board.getRegDate())
                 .content(board.getContent())
                 .build();
     }
@@ -42,7 +42,7 @@ public class BoardDTO {
                 .writer(this.writer)
                 .email(this.email)
                 .title(this.title)
-                .reg_date(LocalDate.now())
+                .regDate(this.regDate)
                 .content(this.content)
                 .build();
     }

@@ -22,7 +22,7 @@ public class BoardService {
     }
 
     //기존 List<Board>값으로 넘어가지만 페이징 설정을 해주면 Page<Board>로 넘어간다.
-    public Page<Board> boardList(Pageable pageable) {
+    public Page<Board> getBoardList(Pageable pageable) {
         return boardRepository.findAll(pageable);
     }
 
@@ -36,7 +36,7 @@ public class BoardService {
     public void updateBoard(Long id, BoardDTO boardDTO) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. ID: " + id));
-        board.update(boardDTO.getWriter(),boardDTO.getEmail(),boardDTO.getTitle(),boardDTO.getReg_date(), boardDTO.getContent());
+        board.update(boardDTO.getWriter(),boardDTO.getEmail(),boardDTO.getTitle(),boardDTO.getRegDate(), boardDTO.getContent());
 
     }
 

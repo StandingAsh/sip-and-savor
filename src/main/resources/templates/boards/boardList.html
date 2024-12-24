@@ -28,7 +28,7 @@
             <td th:text="${board.writer}"></td>
             <td th:text="${board.email}"></td>
             <td><a th:href="@{/boards/boardView/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
-            <td th:text="${board.reg_date}"></td>
+            <td th:text="${board.regDate}"></td>
             <td th:text="${board.content}"></td>
         </tr>
         </tbody>

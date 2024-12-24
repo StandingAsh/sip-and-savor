@@ -26,26 +26,26 @@ public class Board {
     private String title;
 
     @Column(nullable = false)
-    private LocalDate reg_date;
+    private LocalDate regDate;
 
     @Column(length = 500)
     private String content;
 
     @Builder
-    public Board(String writer, String email, String title, LocalDate reg_date, String content) {
+    public Board(String writer, String email, String title, LocalDate regDate, String content) {
         this.writer = writer;
         this.email = email;
         this.title = title;
-        this.reg_date = reg_date;
+        this.regDate = regDate;
         this.content = content;
     }
 
 
-    public void update(String writer, String email, String title, LocalDate reg_date, String content) {
+    public void update(String writer, String email, String title, LocalDate regDate, String content) {
         this.writer = writer;
         this.email = email;
         this.title = title;
-        this.reg_date = LocalDate.now();
+        this.regDate = regDate;
         this.content = content;
     }
 

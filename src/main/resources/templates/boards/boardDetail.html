@@ -25,11 +25,12 @@
             <td th:text="${board.writer}"></td>
             <td th:text="${board.email}"></td>
             <td th:text="${board.title}"></td>
-            <td th:text="${board.reg_date}"></td>
+            <td th:text="${board.regDate}"></td>
             <td th:text="${board.content}"></td>
         </tr>
         <tr>
             <td th:colspan="6" class="text-center">
+                <a href="/boards/boardList" class="btn btn-success">돌아가기</a>
                 <a th:href="@{/boards/boardDelete(id=${board.id})}" class="btn btn-danger me-2">글 삭제하기</a>
                 <a th:href="@{/boards/modify/{id}(id=${board.id})}" class="btn btn-warning">글 수정하기</a>
             </td>
