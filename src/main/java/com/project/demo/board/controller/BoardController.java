@@ -24,6 +24,7 @@ import java.time.LocalDate;
 @RequestMapping("/boards")
 @Controller
 public class BoardController {
+
     @Autowired
     private BoardService boardService;
 
