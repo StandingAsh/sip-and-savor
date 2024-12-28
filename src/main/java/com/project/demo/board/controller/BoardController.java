@@ -86,16 +86,16 @@ public class BoardController {
         return "boards/boardList";
     }
 
-    @GetMapping("/boardView/{id}")
-    public String boardView(Model model, @PathVariable(name = "id") Long id) {
+    @GetMapping("/boardView/{boardId}")
+    public String boardView(Model model, @PathVariable(name = "boardId") Long id) {
         model.addAttribute("board", boardService.findBoardById(id));
         return "boards/boardDetail";
     }
 
     @GetMapping("/boardDelete")
     public String boardDelete(Long id) {
-        boardService.deleteBoardById(id);
-        return "redirect:/boards/boardList";
+        Long whiskeyId = boardService.deleteBoardById(id);
+        return "redirect:/whiskeys/" + whiskeyId;
     }
 
     @GetMapping("/modify/{id}")

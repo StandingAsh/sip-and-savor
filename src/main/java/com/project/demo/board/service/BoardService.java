@@ -38,6 +38,7 @@ public class BoardService {
         List<BoardDTO> dtoList = new ArrayList<>();
         for (Board board : list) {
             BoardDTO boardDTO = BoardDTO.builder()
+                    .id(board.getId())
                     .writer(board.getWriter())
                     .whiskeyId(board.getWhiskeyId())
                     .title(board.getTitle())
@@ -57,8 +58,10 @@ public class BoardService {
         return boardRepository.findById(id).orElse(null);
     }
 
-    public void deleteBoardById(Long id) {
+    public Long deleteBoardById(Long id) {
+        Long whiskeyId = boardRepository.findById(id).get().getWhiskeyId();
         boardRepository.deleteById(id);
+        return whiskeyId;
     }
 
     @Transactional

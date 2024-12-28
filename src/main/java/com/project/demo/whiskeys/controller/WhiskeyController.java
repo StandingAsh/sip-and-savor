@@ -54,6 +54,9 @@ public class WhiskeyController {
         // -4 하는 이유는 현재 페이지 기준으로 앞쪽에 표시할 4개 페이지 포함
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 9, boardList.getTotalPages());
+        System.out.println("nowPage: " + nowPage);
+        System.out.println("startPage: " + startPage);
+        System.out.println("endPage: " + endPage);
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("nowPage", nowPage);

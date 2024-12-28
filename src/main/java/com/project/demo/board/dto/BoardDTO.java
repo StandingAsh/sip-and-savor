@@ -19,7 +19,8 @@ public class BoardDTO {
     private String content;
 
     @Builder
-    public BoardDTO(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
+    public BoardDTO(Long id, String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
+        this.id = id;
         this.writer = writer;
         this.whiskeyId = whiskeyId;
         this.title = title;

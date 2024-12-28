@@ -77,7 +77,7 @@
             <td th:text="${board.id}"></td>
             <td th:text="${board.writer}"></td>
             <td th:text="${board.whiskeyId}"></td>
-            <td><a th:href="@{/boards/boardView/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
+            <td><a th:href="@{/boards/boardView/{boardId}(boardId=${board.id})}" th:text="${board.title}"></a></td>
             <td th:text="${board.regDate}"></td>
             <td th:text="${board.content}"></td>
         </tr>
@@ -89,18 +89,18 @@
         <ul class="pagination justify-content-center">
             <!-- 이전 버튼 -->
             <li class="page-item" th:classappend="${startPage > 1} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/whiskeys/whiskeyDetail(page=${startPage - 2})}" aria-label="Previous">
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${startPage - 2})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <!-- 페이지 번호 -->
             <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
                 th:classappend="${page == nowPage} ? 'active' : ''">
-                <a class="page-link" th:href="@{/whiskeys/whiskeyDetail(page=${page - 1})}" th:text="${page}"></a>
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${page - 1})}" th:text="${page}"></a>
             </li>
             <!-- 다음 버튼 -->
             <li class="page-item" th:classappend="${endPage < boardList.totalPages} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/whiskeys/whiskeyDetail(page=${endPage})}" aria-label="Next">
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${endPage})}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
