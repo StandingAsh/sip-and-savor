@@ -39,14 +39,14 @@
         <ul class="pagination justify-content-center">
             <!-- 이전 버튼 -->
             <li class="page-item" th:classappend="${startPage > 1} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/boards/boardList(page=${startPage-2})}" aria-label="Previous">
+                <a class="page-link" th:href="@{/boards/boardList(page=${startPage - 2})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <!-- 페이지 번호 -->
             <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
                 th:classappend="${page == nowPage} ? 'active' : ''">
-                <a class="page-link" th:href="@{/boards/boardList(page=${page-1})}" th:text="${page}"></a>
+                <a class="page-link" th:href="@{/boards/boardList(page=${page - 1})}" th:text="${page}"></a>
             </li>
             <!-- 다음 버튼 -->
             <li class="page-item" th:classappend="${endPage < boardList.totalPages} ? '' : 'disabled'">

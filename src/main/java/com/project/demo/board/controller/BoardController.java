@@ -28,28 +28,32 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/writeBoard")
-    public String writeBoard(Model model) {
+    @GetMapping("/writeBoard/{whiskeyId}")
+    public String writeBoard(@PathVariable(name = "whiskeyId") Long whiskeyId,
+                             Model model) {
         model.addAttribute("boardForm", new BoardForm());
+        model.addAttribute("whiskeyId", whiskeyId);
         return "boards/boardWriteForm";
     }
 
-    @PostMapping("/writeBoard")
-    public String writeBoardPro(BoardForm boardForm, Model model) {
+    @PostMapping("/writeBoard/{whiskeyId}")
+    public String writeBoardPro(BoardForm boardForm,
+                                @PathVariable(name = "whiskeyId") Long whiskeyId,
+                                Model model) {
 
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .writer(auth.getName())
-                .whiskeyId(1L)
+                .whiskeyId(whiskeyId)
                 .title(boardForm.getTitle())
                 .content(boardForm.getContent())
                 .regDate(LocalDate.now())
                 .build();
 
         boardService.save(boardDTO);
-        return "redirect:/boards/boardList";
+        return "redirect:/whiskeys/{whiskeyId}";
     }
 
     /* Pageable 인터페이스 통해 해당 페이징 정보 설정 가능
@@ -62,6 +66,7 @@ public class BoardController {
 
     @GetMapping("/boardList")
     public String boardList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
         Page<Board> boardList = boardService.getBoardList(pageable);
 
         //페이지블럭 처리

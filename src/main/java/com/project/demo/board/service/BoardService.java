@@ -3,13 +3,17 @@ package com.project.demo.board.service;
 import com.project.demo.board.dto.BoardDTO;
 import com.project.demo.board.entity.Board;
 import com.project.demo.board.repository.BoardRepository;
-import com.project.demo.whiskeys.dto.WhiskeyDTO;
+import com.project.demo.whiskeys.entity.Whiskey;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +32,25 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
-    public Page<Board> getBoardListByWhiskeyId(WhiskeyDTO whiskeyDTO, Pageable pageable) {
-        return (Page<Board>) boardRepository.findAllByWhiskeyId(whiskeyDTO.getId(), pageable);
+    public Page<BoardDTO> getBoardListByWhiskeyId(Whiskey whiskey, Pageable pageable) {
+
+        List<Board> list = boardRepository.findAllByWhiskeyId(whiskey.getId(), pageable);
+        List<BoardDTO> dtoList = new ArrayList<>();
+        for (Board board : list) {
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .writer(board.getWriter())
+                    .whiskeyId(board.getWhiskeyId())
+                    .title(board.getTitle())
+                    .regDate(board.getRegDate())
+                    .content(board.getContent())
+                    .build();
+            dtoList.add(boardDTO);
+        }
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), dtoList.size());
+
+        return new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
     }
 
     public Board findBoardById(Long id) {
