@@ -40,7 +40,6 @@ public class Board {
         this.content = content;
     }
 
-
     public void update(String writer, String email, String title, LocalDate regDate, String content) {
         this.writer = writer;
         this.email = email;
@@ -48,5 +47,4 @@ public class Board {
         this.regDate = regDate;
         this.content = content;
     }
-
 }

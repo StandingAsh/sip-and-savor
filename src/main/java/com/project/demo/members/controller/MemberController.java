@@ -36,6 +36,7 @@ public class MemberController {
     @PostMapping("/members/new")
     public String create(@Valid MemberForm memberForm, BindingResult result, Model model, Errors errors) {
 
+        // todo: Validation 로직 서비스로 리팩토링
         // 정규식 검사
         if (result.hasErrors()) {
             return "members/createMemberForm";

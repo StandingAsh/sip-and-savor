@@ -39,9 +39,4 @@ public class BoardService {
         board.update(boardDTO.getWriter(),boardDTO.getEmail(),boardDTO.getTitle(),boardDTO.getRegDate(), boardDTO.getContent());
 
     }
-
-
-
-
-
 }

@@ -3,7 +3,7 @@ package com.project.demo.board.controller;
 
 import com.project.demo.board.dto.BoardDTO;
 import com.project.demo.board.entity.Board;
-import com.project.demo.board.entity.BoardForm;
+import com.project.demo.board.dto.BoardForm;
 import com.project.demo.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -104,6 +104,4 @@ public class BoardController {
         boardService.updateBoard(id, boardDTO);
         return "redirect:/boards/boardList";
     }
-
-
 }
