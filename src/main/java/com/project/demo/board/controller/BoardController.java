@@ -42,7 +42,7 @@ public class BoardController {
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .writer(auth.getName())
-                .email("null@gmail.com")
+                .whiskeyId(1L)
                 .title(boardForm.getTitle())
                 .content(boardForm.getContent())
                 .regDate(LocalDate.now())

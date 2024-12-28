@@ -10,17 +10,18 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class BoardDTO {
+
     private Long id;
     private String writer;
-    private String email;
+    private Long whiskeyId;
     private String title;
     private LocalDate regDate;
     private String content;
 
     @Builder
-    public BoardDTO(String writer, String email, String title, LocalDate regDate, String content) {
+    public BoardDTO(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
         this.writer = writer;
-        this.email = email;
+        this.whiskeyId = whiskeyId;
         this.title = title;
         this.regDate = regDate;
         this.content = content;
@@ -29,7 +30,7 @@ public class BoardDTO {
     public static BoardDTO fromEntity(Board board) {
         return BoardDTO.builder()
                 .writer(board.getWriter())
-                .email(board.getEmail())
+                .whiskeyId(board.getWhiskeyId())
                 .title(board.getTitle())
                 .regDate(board.getRegDate())
                 .content(board.getContent())
@@ -40,7 +41,7 @@ public class BoardDTO {
     public Board toEntity() {
         return Board.builder()
                 .writer(this.writer)
-                .email(this.email)
+                .whiskeyId(this.whiskeyId)
                 .title(this.title)
                 .regDate(this.regDate)
                 .content(this.content)

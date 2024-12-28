@@ -3,6 +3,7 @@ package com.project.demo.board.service;
 import com.project.demo.board.dto.BoardDTO;
 import com.project.demo.board.entity.Board;
 import com.project.demo.board.repository.BoardRepository;
+import com.project.demo.whiskeys.dto.WhiskeyDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
+
     @Autowired
     BoardRepository boardRepository;
 
@@ -26,17 +28,27 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
+    public Page<Board> getBoardListByWhiskeyId(WhiskeyDTO whiskeyDTO, Pageable pageable) {
+        return (Page<Board>) boardRepository.findAllByWhiskeyId(whiskeyDTO.getId(), pageable);
+    }
+
     public Board findBoardById(Long id) {
         return boardRepository.findById(id).orElse(null);
     }
 
-    public void deleteBoardById(Long id) {boardRepository.deleteById(id);}
+    public void deleteBoardById(Long id) {
+        boardRepository.deleteById(id);
+    }
 
     @Transactional
     public void updateBoard(Long id, BoardDTO boardDTO) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. ID: " + id));
-        board.update(boardDTO.getWriter(),boardDTO.getEmail(),boardDTO.getTitle(),boardDTO.getRegDate(), boardDTO.getContent());
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "해당 게시글이 존재하지 않습니다. ID: " + id));
 
+        board.update(
+                boardDTO.getWriter(), boardDTO.getWhiskeyId(),
+                boardDTO.getTitle(), boardDTO.getRegDate(), boardDTO.getContent()
+        );
     }
 }

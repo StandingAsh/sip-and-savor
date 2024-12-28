@@ -20,7 +20,7 @@ public class Board {
     private String writer;
 
     @Column(nullable = false)
-    private String email;
+    private Long whiskeyId;
 
     @Column(nullable = false)
     private String title;
@@ -32,17 +32,17 @@ public class Board {
     private String content;
 
     @Builder
-    public Board(String writer, String email, String title, LocalDate regDate, String content) {
+    public Board(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
         this.writer = writer;
-        this.email = email;
+        this.whiskeyId = whiskeyId;
         this.title = title;
         this.regDate = regDate;
         this.content = content;
     }
 
-    public void update(String writer, String email, String title, LocalDate regDate, String content) {
+    public void update(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
         this.writer = writer;
-        this.email = email;
+        this.whiskeyId = whiskeyId;
         this.title = title;
         this.regDate = regDate;
         this.content = content;
