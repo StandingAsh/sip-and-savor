@@ -32,19 +32,12 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
-    public Page<BoardDTO> getBoardListByWhiskeyId(Whiskey whiskey, Pageable pageable) {
+    public Page<BoardDTO> getBoardListByWhiskeyId(Long id, Pageable pageable) {
 
-        List<Board> list = boardRepository.findAllByWhiskeyId(whiskey.getId());
+        List<Board> list = boardRepository.findAllByWhiskeyId(id);
         List<BoardDTO> dtoList = new ArrayList<>();
         for (Board board : list) {
-            BoardDTO boardDTO = BoardDTO.builder()
-                    .id(board.getId())
-                    .writer(board.getWriter())
-                    .whiskeyId(board.getWhiskeyId())
-                    .title(board.getTitle())
-                    .regDate(board.getRegDate())
-                    .content(board.getContent())
-                    .build();
+            BoardDTO boardDTO = BoardDTO.fromEntity(board);
             dtoList.add(boardDTO);
         }
 
@@ -55,8 +48,12 @@ public class BoardService {
         return new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
     }
 
-    public Board findBoardById(Long id) {
-        return boardRepository.findById(id).orElse(null);
+    public BoardDTO findBoardById(Long id) throws Exception {
+        Board board = boardRepository.findById(id).orElse(null);
+        if (board == null) {
+            throw new Exception("해당 게시글이 존재하지 않습니다.");
+        }
+        return BoardDTO.fromEntity(board);
     }
 
     public Long deleteBoardById(Long id) {
@@ -66,11 +63,12 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long id, BoardDTO boardDTO) {
+    public Long updateBoard(Long id, BoardDTO boardDTO) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "해당 게시글이 존재하지 않습니다. ID: " + id));
 
         board.update(boardDTO.getTitle(), boardDTO.getContent());
+        return board.getWhiskeyId();
     }
 }

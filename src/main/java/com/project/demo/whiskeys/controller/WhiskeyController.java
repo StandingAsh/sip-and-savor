@@ -43,7 +43,7 @@ public class WhiskeyController {
         Whiskey whiskey = whiskeyService.getWhiskeyById(id);
         model.addAttribute("whiskey", whiskey);
 
-        Page<BoardDTO> boardList = boardService.getBoardListByWhiskeyId(whiskey, pageable);
+        Page<BoardDTO> boardList = boardService.getBoardListByWhiskeyId(id, pageable);
 
         // 페이지블럭 처리
         // 1을 더해주는 이유: Pageable 은 0부터라 1을 처리하려면 1을 더해서 시작해주어야 함

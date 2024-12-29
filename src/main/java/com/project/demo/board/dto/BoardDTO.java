@@ -30,6 +30,7 @@ public class BoardDTO {
 
     public static BoardDTO fromEntity(Board board) {
         return BoardDTO.builder()
+                .id(board.getId())
                 .writer(board.getWriter())
                 .whiskeyId(board.getWhiskeyId())
                 .title(board.getTitle())

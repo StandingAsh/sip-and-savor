@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td th:colspan="6" class="text-center">
-                <a href="/boards/boardList" class="btn btn-success">돌아가기</a>
+                <a th:href="@{/whiskeys/{id}(id=${board.whiskeyId})}" class="btn btn-success">돌아가기</a>
                 <a th:href="@{/boards/boardDelete(id=${board.id})}" class="btn btn-danger me-2">글 삭제하기</a>
                 <a th:href="@{/boards/modify/{id}(id=${board.id})}" class="btn btn-warning">글 수정하기</a>
             </td>

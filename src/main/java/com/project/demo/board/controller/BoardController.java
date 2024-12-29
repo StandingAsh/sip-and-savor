@@ -5,6 +5,7 @@ import com.project.demo.board.dto.BoardDTO;
 import com.project.demo.board.entity.Board;
 import com.project.demo.board.dto.BoardForm;
 import com.project.demo.board.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 
+@Slf4j
 @RequestMapping("/boards")
 @Controller
 public class BoardController {
@@ -88,7 +90,11 @@ public class BoardController {
 
     @GetMapping("/boardView/{boardId}")
     public String boardView(Model model, @PathVariable(name = "boardId") Long id) {
-        model.addAttribute("board", boardService.findBoardById(id));
+        try {
+            model.addAttribute("board", boardService.findBoardById(id));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return "boards/boardDetail";
     }
 
@@ -100,13 +106,17 @@ public class BoardController {
 
     @GetMapping("/modify/{id}")
     public String boardUpdate(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("board", boardService.findBoardById(id));
+        try {
+            model.addAttribute("board", boardService.findBoardById(id));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return "boards/boardUpdateForm";
     }
 
     @PostMapping("/boardUpdate/{id}")
     public String boardUpdate(@PathVariable("id") Long id, BoardDTO boardDTO) {
-        boardService.updateBoard(id, boardDTO);
-        return "redirect:/boards/boardList";
+        Long whiskeyId = boardService.updateBoard(id, boardDTO);
+        return "redirect:/whiskeys/" + whiskeyId;
     }
 }
