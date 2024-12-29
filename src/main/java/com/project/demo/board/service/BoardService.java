@@ -34,7 +34,7 @@ public class BoardService {
 
     public Page<BoardDTO> getBoardListByWhiskeyId(Whiskey whiskey, Pageable pageable) {
 
-        List<Board> list = boardRepository.findAllByWhiskeyId(whiskey.getId(), pageable);
+        List<Board> list = boardRepository.findAllByWhiskeyId(whiskey.getId());
         List<BoardDTO> dtoList = new ArrayList<>();
         for (Board board : list) {
             BoardDTO boardDTO = BoardDTO.builder()
@@ -48,6 +48,7 @@ public class BoardService {
             dtoList.add(boardDTO);
         }
 
+        // List to Page
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), dtoList.size());
 
@@ -70,9 +71,6 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "해당 게시글이 존재하지 않습니다. ID: " + id));
 
-        board.update(
-                boardDTO.getWriter(), boardDTO.getWhiskeyId(),
-                boardDTO.getTitle(), boardDTO.getRegDate(), boardDTO.getContent()
-        );
+        board.update(boardDTO.getTitle(), boardDTO.getContent());
     }
 }

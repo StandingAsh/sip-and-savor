@@ -40,11 +40,9 @@ public class Board {
         this.content = content;
     }
 
-    public void update(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
-        this.writer = writer;
-        this.whiskeyId = whiskeyId;
+    public void update(String title, String content) {
         this.title = title;
-        this.regDate = regDate;
+        this.regDate = LocalDate.now();
         this.content = content;
     }
 }

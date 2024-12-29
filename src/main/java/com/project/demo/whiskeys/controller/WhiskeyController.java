@@ -1,7 +1,6 @@
 package com.project.demo.whiskeys.controller;
 
 import com.project.demo.board.dto.BoardDTO;
-import com.project.demo.board.entity.Board;
 import com.project.demo.board.service.BoardService;
 import com.project.demo.whiskeys.entity.Whiskey;
 import com.project.demo.whiskeys.service.WhiskeyService;
@@ -54,9 +53,8 @@ public class WhiskeyController {
         // -4 하는 이유는 현재 페이지 기준으로 앞쪽에 표시할 4개 페이지 포함
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 9, boardList.getTotalPages());
-        System.out.println("nowPage: " + nowPage);
-        System.out.println("startPage: " + startPage);
-        System.out.println("endPage: " + endPage);
+        if (endPage == 0)
+            endPage = 1;
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("nowPage", nowPage);

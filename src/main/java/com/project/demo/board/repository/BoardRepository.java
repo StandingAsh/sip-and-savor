@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findAllByWhiskeyId(Long id, Pageable pageable);
+    List<Board> findAllByWhiskeyId(Long id);
 }
