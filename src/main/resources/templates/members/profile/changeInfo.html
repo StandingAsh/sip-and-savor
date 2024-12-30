@@ -1,7 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"></head>
 <body>
-회원 정보 수정
+
 <a href="/mypage">돌아가기</a>
+
+<div class="form-container">
+    <h1>회원 정보 수정</h1>
+    <form action="/members/new" method="post" th:object="${memberForm}">
+        <!-- 이름 입력 -->
+        <input type="text" th:field="*{name}" id="name" name="name" class="form-control" th:placeholder="${memberForm.name}" required>
+
+        <!-- 아이디 입력 -->
+        <input type="text" th:field="*{userId}" id="userId" name="userId" class="form-control" th:placeholder="${memberForm.userId}" required>
+        <div th:if="${#fields.hasErrors('userId')}">
+            <p style="color:red;"><a th:errors="*{userId}"></a></p>
+        </div>
+
+        <div th:if="exception">
+            <p style="color:red;"><a th:text="${exception}"></a></p>
+        </div>
+
+        <!-- 이메일 입력 -->
+        <input type="email" th:field="*{email}" id="Email" name="email" class="form-control" th:placeholder="${memberForm.email}" required>
+
+        <a href="/mypage/change-password">비밀번호 변경하기</a>
+
+        <!-- 등록 버튼 -->
+        <button type="submit">변경하기</button>
+    </form>
+</div>
 </body>
 </html>
