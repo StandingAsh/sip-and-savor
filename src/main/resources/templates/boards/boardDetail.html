@@ -2,18 +2,66 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판 상세페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            min-width: 120px;
+            margin: 0 10px;
+        }
+
+        table {
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        td[colspan="6"] {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
     <h1 class="text-center mb-4">게시판 상세페이지</h1>
-    <table class="table table-bordered table-hover">
-        <thead class="table-primary">
+    <table class="table table-bordered">
+        <thead>
         <tr>
             <th scope="col">번호</th>
             <th scope="col">작성자</th>
-            <th scope="col">이메일</th>
+            <th scope="col">위스키 고유번호</th>
             <th scope="col">제목</th>
             <th scope="col">작성일</th>
             <th scope="col">내용</th>
@@ -29,10 +77,14 @@
             <td th:text="${board.content}"></td>
         </tr>
         <tr>
-            <td th:colspan="6" class="text-center">
-                <a th:href="@{/whiskeys/{id}(id=${board.whiskeyId})}" class="btn btn-success">돌아가기</a>
-                <a th:href="@{/boards/boardDelete(id=${board.id})}" class="btn btn-danger me-2">글 삭제하기</a>
-                <a th:href="@{/boards/modify/{id}(id=${board.id})}" class="btn btn-warning">글 수정하기</a>
+            <td colspan="6" class="text-center">
+                <div class="btn-group">
+                    <a th:href="@{/whiskeys/{id}(id=${board.whiskeyId})}" class="btn btn-outline-primary">돌아가기</a>
+                    <div th:if="${isWriter}">
+                        <a th:href="@{/boards/boardDelete(id=${board.id})}" class="btn btn-outline-danger">글 삭제하기</a>
+                        <a th:href="@{/boards/modify/{id}(id=${board.id})}" class="btn btn-outline-warning">글 수정하기</a>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>

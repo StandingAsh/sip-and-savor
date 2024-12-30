@@ -90,8 +90,16 @@ public class BoardController {
 
     @GetMapping("/boardView/{boardId}")
     public String boardView(Model model, @PathVariable(name = "boardId") Long id) {
+
         try {
-            model.addAttribute("board", boardService.findBoardById(id));
+            BoardDTO boardDTO = boardService.findBoardById(id);
+            Authentication auth
+                    = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();
+            boolean isWriter = boardDTO.getWriter().equals(name);
+
+            model.addAttribute("board", boardDTO);
+            model.addAttribute("isWriter", isWriter);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
