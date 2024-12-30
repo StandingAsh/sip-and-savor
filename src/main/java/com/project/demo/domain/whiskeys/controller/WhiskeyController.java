@@ -63,4 +63,9 @@ public class WhiskeyController {
 
         return "whiskeys/whiskeyDetail";
     }
+
+    @GetMapping("/whiskeys/about")
+    public String displayAbout() {
+        return "about";
+    }
 }
