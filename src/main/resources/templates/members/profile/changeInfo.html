@@ -68,6 +68,15 @@
             </div>
         </div>
 
+        <!-- 비밀번호 입력 -->
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호 확인</label>
+            <input type="password" th:field="*{password}" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요." required>
+            <div th:if="${#fields.hasErrors('password')}" class="text-danger small">
+                <a th:errors="*{password}"></a>
+            </div>
+        </div>
+
         <!-- 비밀번호 변경 링크 -->
         <div class="mb-3 text-center">
             <a href="/mypage/change-password" class="btn btn-outline-secondary btn-sm">비밀번호 변경하기</a>

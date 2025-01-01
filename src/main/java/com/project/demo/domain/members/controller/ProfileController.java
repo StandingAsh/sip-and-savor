@@ -6,6 +6,9 @@ import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,9 @@ public class ProfileController {
     private final MemberService memberService;
     private final UserIdValidator userIdValidator;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @InitBinder("ChangeInfoForm")
     public void validatorBinder(WebDataBinder binder) {
         binder.addValidators(userIdValidator);
@@ -33,6 +39,7 @@ public class ProfileController {
     // 로그인 성공
     @GetMapping("/mypage")
     public String myPage(Model model) {
+
         try {
             Authentication auth =
                     SecurityContextHolder.getContext().getAuthentication();
@@ -78,8 +85,15 @@ public class ProfileController {
 
         try {
             memberService.updateMemberInfo(changeInfoForm, auth.getName());
+            Authentication newAuth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            changeInfoForm.getUserId(),
+                            changeInfoForm.getPassword())
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             model.addAttribute("exception", e.getMessage());
             return "/members/profile/changeInfo";
         }
@@ -105,10 +119,17 @@ public class ProfileController {
 
         Authentication auth
                 = SecurityContextHolder.getContext().getAuthentication();
+
         try {
             memberService.updateMemberPassword(changePasswordForm, auth.getName());
+            Authentication newAuth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            auth.getName(),
+                            changePasswordForm.getNewPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.toString());
             model.addAttribute("exception", e.getMessage());
 
             return "/members/profile/changePassword";

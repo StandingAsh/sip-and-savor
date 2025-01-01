@@ -1,11 +1,8 @@
 package com.project.demo.domain.members.service;
 
-import com.project.demo.domain.members.dto.ChangeInfoForm;
-import com.project.demo.domain.members.dto.ChangePasswordForm;
-import com.project.demo.domain.members.dto.DeleteForm;
+import com.project.demo.domain.members.dto.*;
 import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.members.repository.MemberRepository;
-import com.project.demo.domain.members.dto.MemberDTO;
 import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +56,11 @@ public class MemberService {
     public void updateMemberInfo(ChangeInfoForm form, String userId) throws Exception {
 
         Member member = memberRepository.findByUserId(userId);
-        if (memberRepository.existsByUserId(form.getUserId()))
+        if (!passwordEncoder.matches(form.getPassword(), member.getPassword()))
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+
+        if (memberRepository.existsByUserId(form.getUserId())
+                && !form.getUserId().equals(userId))
             throw new Exception("이미 존재하는 아이디입니다.");
 
         member.updateInfo(form.getName(), form.getUserId(), form.getEmail());
@@ -72,6 +73,9 @@ public class MemberService {
         if (!memberRepository.existsByUserId(userId)) {
             log.info("회원정보를 찾을 수 없습니다.");
             throw new Exception("회원정보를 찾을 수 없습니다.");
+        } else if (form.getNewPassword().equals(form.getOldPassword())) {
+            log.info("비밀번호가 기존 비밀번호와 동일합니다.");
+            throw new Exception("비밀번호가 기존 비밀번호와 동일합니다.");
         }
 
         Member member = memberRepository.findByUserId(userId);
