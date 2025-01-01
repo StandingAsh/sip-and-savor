@@ -60,12 +60,12 @@ public class ProfileController {
         changeInfoForm.setUserId(memberDTO.getUserId());
         changeInfoForm.setEmail(memberDTO.getEmail());
 
-        model.addAttribute("memberForm", changeInfoForm);
+        model.addAttribute("changeInfoForm", changeInfoForm);
         return "/members/profile/changeInfo";
     }
 
     @PostMapping("/mypage/change-info")
-    public String changeInfo(@Valid ChangeInfoForm form, BindingResult result, Model model) {
+    public String changeInfo(@Valid ChangeInfoForm changeInfoForm, BindingResult result, Model model) {
 
         // todo: validation 로직 service 로 이동 필요
         if (result.hasErrors()) {
@@ -77,7 +77,7 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication();
 
         try {
-            memberService.updateMemberInfo(form, auth.getName());
+            memberService.updateMemberInfo(changeInfoForm, auth.getName());
         } catch (Exception e) {
             log.error(e.getMessage());
             model.addAttribute("exception", e.getMessage());
@@ -90,25 +90,26 @@ public class ProfileController {
     // 비밀번호 변경
     @GetMapping("/mypage/change-password")
     public String changePassword(Model model) {
-        model.addAttribute("passwordForm", new ChangePasswordForm());
+        model.addAttribute("changePasswordForm", new ChangePasswordForm());
         return "/members/profile/changePassword";
     }
 
     @PostMapping("/mypage/change-password")
-    public String changePassword(@Valid ChangePasswordForm form, Model model) {
+    public String changePassword(@Valid ChangePasswordForm changePasswordForm, BindingResult result, Model model) {
 
-        boolean hasException = false;
+        // todo: validation 로직 service 로 이동 필요
+        if (result.hasErrors()) {
+            log.error(result.getAllErrors().toString());
+            return "/members/profile/changePassword";
+        }
 
         Authentication auth
                 = SecurityContextHolder.getContext().getAuthentication();
         try {
-            memberService.updateMemberPassword(form, auth.getName());
+            memberService.updateMemberPassword(changePasswordForm, auth.getName());
         } catch (Exception e) {
-            hasException = true;
             log.error(e.getMessage());
-
             model.addAttribute("exception", e.getMessage());
-            model.addAttribute("hasException", hasException);
 
             return "/members/profile/changePassword";
         }

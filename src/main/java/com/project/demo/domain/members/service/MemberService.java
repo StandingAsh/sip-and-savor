@@ -7,7 +7,10 @@ import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.members.repository.MemberRepository;
 import com.project.demo.domain.members.dto.MemberDTO;
 import com.project.demo.domain.members.validator.UserIdValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private static final Logger log = LoggerFactory.getLogger(MemberService.class);
     @Autowired
     private MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final UserIdValidator userIdValidator;
 
     // 회원가입
     public void join(MemberDTO memberDto) {
@@ -51,6 +54,8 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
+    // 회원 정보 변경
+    @Transactional
     public void updateMemberInfo(ChangeInfoForm form, String userId) throws Exception {
 
         Member member = memberRepository.findByUserId(userId);
@@ -60,16 +65,28 @@ public class MemberService {
         member.updateInfo(form.getName(), form.getUserId(), form.getEmail());
     }
 
+    // 비밀번호 변경
+    @Transactional
     public void updateMemberPassword(ChangePasswordForm form, String userId) throws Exception {
 
+        if (!memberRepository.existsByUserId(userId)) {
+            log.info("회원정보를 찾을 수 없습니다.");
+            throw new Exception("회원정보를 찾을 수 없습니다.");
+        }
+
         Member member = memberRepository.findByUserId(userId);
-        if(!passwordEncoder.matches(form.getOldPassword(), member.getPassword()))
-            throw new Exception("비밀번호가 일치하지 않습니다.");
 
-        if(!form.getNewPassword().equals(form.getNewPasswordConfirm()))
-            throw new Exception("비밀번호가 일치하지 않습니다.");
+        if (!passwordEncoder.matches(form.getOldPassword(), member.getPassword())) {
+            log.info("기존 비밀번호가 일치하지 않습니다.");
+            throw new Exception("기존 비밀번호가 일치하지 않습니다.");
+        }
 
-        member.updatePassword(form.getNewPassword());
+        if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+            log.info("새 비밀번호가 일치하지 않습니다.");
+            throw new Exception("새 비밀번호가 일치하지 않습니다.");
+        }
+
+        member.updatePassword(passwordEncoder.encode(form.getNewPassword()));
     }
 
     // 회원 아이디로 조회
