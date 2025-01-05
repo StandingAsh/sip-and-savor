@@ -19,6 +19,7 @@ public class WhiskeyDTO {
 
     @Builder
     public WhiskeyDTO(Long id, String name, String imgUrl, String category, String abv, String country, String year, String bottleSize) {
+
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;

@@ -1,6 +1,5 @@
 package com.project.demo.domain.board.controller;
 
-
 import com.project.demo.domain.board.dto.BoardDTO;
 import com.project.demo.domain.board.entity.Board;
 import com.project.demo.domain.board.dto.BoardForm;

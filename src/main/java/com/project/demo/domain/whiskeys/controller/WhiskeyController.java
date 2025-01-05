@@ -2,7 +2,7 @@ package com.project.demo.domain.whiskeys.controller;
 
 import com.project.demo.domain.board.dto.BoardDTO;
 import com.project.demo.domain.board.service.BoardService;
-import com.project.demo.domain.whiskeys.entity.Whiskey;
+import com.project.demo.domain.whiskeys.dto.WhiskeyDTO;
 import com.project.demo.domain.whiskeys.service.WhiskeyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class WhiskeyController {
     @GetMapping("/whiskeys")
     public String display(Model model) {
 
-        List<Whiskey> whiskeyList = whiskeyService.findAllWhiskeys();
+        List<WhiskeyDTO> whiskeyList = whiskeyService.findAllWhiskeys();
         model.addAttribute("whiskeyList", whiskeyList);
 
         return "whiskeys/whiskeyList";
@@ -40,7 +40,7 @@ public class WhiskeyController {
                                  @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                  Model model) {
 
-        Whiskey whiskey = whiskeyService.getWhiskeyById(id);
+        WhiskeyDTO whiskey = whiskeyService.getWhiskeyById(id);
         model.addAttribute("whiskey", whiskey);
 
         Page<BoardDTO> boardList = boardService.getBoardListByWhiskeyId(id, pageable);
