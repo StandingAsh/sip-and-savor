@@ -3,6 +3,7 @@ package com.project.demo.domain.board.service;
 import com.project.demo.domain.board.dto.BoardDTO;
 import com.project.demo.domain.board.entity.Board;
 import com.project.demo.domain.board.repository.BoardRepository;
+import com.project.demo.domain.members.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,11 @@ public class BoardService {
 
     @Autowired
     BoardRepository boardRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     public void save(BoardDTO boardDTO) {
-        Board board = boardDTO.toEntity();
-        boardRepository.save(board);
+        boardRepository.save(createBoardEntity(boardDTO));
     }
 
     //기존 List<Board>값으로 넘어가지만 페이징 설정을 해주면 Page<Board>로 넘어간다.
@@ -36,7 +38,7 @@ public class BoardService {
         List<Board> list = boardRepository.findAllByWhiskeyId(id);
         List<BoardDTO> dtoList = new ArrayList<>();
         for (Board board : list) {
-            BoardDTO boardDTO = BoardDTO.fromEntity(board);
+            BoardDTO boardDTO = createBoardDTO(board);
             dtoList.add(boardDTO);
         }
 
@@ -52,7 +54,7 @@ public class BoardService {
         if (board == null) {
             throw new Exception("해당 게시글이 존재하지 않습니다.");
         }
-        return BoardDTO.fromEntity(board);
+        return createBoardDTO(board);
     }
 
     public Long deleteBoardById(Long id) {
@@ -69,5 +71,29 @@ public class BoardService {
 
         board.update(boardDTO.getTitle(), boardDTO.getContent());
         return board.getWhiskeyId();
+    }
+
+    // DTO -> Entity 변환
+    private Board createBoardEntity(BoardDTO boardDTO) {
+
+        return Board.builder()
+                .writer(memberRepository.findByUserId(boardDTO.getWriter()))
+                .whiskeyId(boardDTO.getWhiskeyId())
+                .title(boardDTO.getTitle())
+                .regDate(boardDTO.getRegDate())
+                .content(boardDTO.getContent())
+                .build();
+    }
+
+    private static BoardDTO createBoardDTO(Board board) {
+
+        return BoardDTO.builder()
+                .id(board.getId())
+                .writer(board.getWriter().getUserId())
+                .whiskeyId(board.getWhiskeyId())
+                .title(board.getTitle())
+                .regDate(board.getRegDate())
+                .content(board.getContent())
+                .build();
     }
 }

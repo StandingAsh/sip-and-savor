@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -31,7 +30,7 @@ public class ProfileController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @InitBinder("ChangeInfoForm")
+    @InitBinder("ChangeInfoRequestDTO")
     public void validatorBinder(WebDataBinder binder) {
         binder.addValidators(userIdValidator);
     }
@@ -60,19 +59,19 @@ public class ProfileController {
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        MemberDTO memberDTO = memberService.findByUserId(auth.getName());
-        ChangeInfoForm changeInfoForm = new ChangeInfoForm();
+        MemberResponseDTO memberResponseDTO = memberService.findByUserId(auth.getName());
+        ChangeInfoRequestDTO changeInfoRequestDTO = new ChangeInfoRequestDTO();
 
-        changeInfoForm.setName(memberDTO.getName());
-        changeInfoForm.setUserId(memberDTO.getUserId());
-        changeInfoForm.setEmail(memberDTO.getEmail());
+        changeInfoRequestDTO.setName(memberResponseDTO.getName());
+        changeInfoRequestDTO.setUserId(memberResponseDTO.getUserId());
+        changeInfoRequestDTO.setEmail(memberResponseDTO.getEmail());
 
-        model.addAttribute("changeInfoForm", changeInfoForm);
+        model.addAttribute("changeInfoRequestDTO", changeInfoRequestDTO);
         return "/members/profile/changeInfo";
     }
 
     @PostMapping("/mypage/change-info")
-    public String changeInfo(@Valid ChangeInfoForm changeInfoForm, BindingResult result, Model model) {
+    public String changeInfo(@Valid ChangeInfoRequestDTO changeInfoRequestDTO, BindingResult result, Model model) {
 
         // todo: validation 로직 service 로 이동 필요
         if (result.hasErrors()) {
@@ -84,11 +83,11 @@ public class ProfileController {
                 SecurityContextHolder.getContext().getAuthentication();
 
         try {
-            memberService.updateMemberInfo(changeInfoForm, auth.getName());
+            memberService.updateMemberInfo(changeInfoRequestDTO, auth.getName());
             Authentication newAuth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            changeInfoForm.getUserId(),
-                            changeInfoForm.getPassword())
+                            changeInfoRequestDTO.getUserId(),
+                            changeInfoRequestDTO.getPassword())
             );
 
             SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -104,12 +103,12 @@ public class ProfileController {
     // 비밀번호 변경
     @GetMapping("/mypage/change-password")
     public String changePassword(Model model) {
-        model.addAttribute("changePasswordForm", new ChangePasswordForm());
+        model.addAttribute("changePasswordRequestDTO", new ChangePasswordRequestDTO());
         return "/members/profile/changePassword";
     }
 
     @PostMapping("/mypage/change-password")
-    public String changePassword(@Valid ChangePasswordForm changePasswordForm, BindingResult result, Model model) {
+    public String changePassword(@Valid ChangePasswordRequestDTO changePasswordRequestDTO, BindingResult result, Model model) {
 
         // todo: validation 로직 service 로 이동 필요
         if (result.hasErrors()) {
@@ -121,11 +120,11 @@ public class ProfileController {
                 = SecurityContextHolder.getContext().getAuthentication();
 
         try {
-            memberService.updateMemberPassword(changePasswordForm, auth.getName());
+            memberService.updateMemberPassword(changePasswordRequestDTO, auth.getName());
             Authentication newAuth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             auth.getName(),
-                            changePasswordForm.getNewPassword())
+                            changePasswordRequestDTO.getNewPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(newAuth);
         } catch (Exception e) {
@@ -141,22 +140,22 @@ public class ProfileController {
     // 회원 탈퇴
     @GetMapping("/mypage/delete")
     public String createDeleteForm(Model model) {
-        model.addAttribute("deleteForm", new DeleteForm());
+        model.addAttribute("deleteRequestDTO", new DeleteRequestDTO());
         return "/members/profile/createDeleteForm";
     }
 
     @PostMapping("/mypage/delete")
-    public String createDeleteForm(DeleteForm deleteForm, Model model) {
+    public String createDeleteForm(DeleteRequestDTO deleteRequestDTO, Model model) {
 
         // 로그인 안돼있는 경우 예외 발생
         try {
             Authentication auth =
                     SecurityContextHolder.getContext().getAuthentication();
-            deleteForm.setUserId(auth.getName());
+            deleteRequestDTO.setUserId(auth.getName());
 
             // 비밀번호 일치하지 않는 경우 예외 발생
             try {
-                memberService.delete(deleteForm);
+                memberService.delete(deleteRequestDTO);
                 SecurityContextHolder.getContext().setAuthentication(null);
             } catch (Exception e) {
                 log.error(e.getMessage());

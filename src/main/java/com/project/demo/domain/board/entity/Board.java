@@ -1,5 +1,6 @@
 package com.project.demo.domain.board.entity;
 
+import com.project.demo.domain.members.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +17,9 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String writer;
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
+    private Member writer;
 
     @Column(nullable = false)
     private Long whiskeyId;
@@ -32,7 +34,7 @@ public class Board {
     private String content;
 
     @Builder
-    public Board(String writer, Long whiskeyId, String title, LocalDate regDate, String content) {
+    public Board(Member writer, Long whiskeyId, String title, LocalDate regDate, String content) {
         this.writer = writer;
         this.whiskeyId = whiskeyId;
         this.title = title;

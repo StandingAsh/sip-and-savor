@@ -1,6 +1,5 @@
 package com.project.demo.domain.board.dto;
 
-import com.project.demo.domain.board.entity.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,27 +25,5 @@ public class BoardDTO {
         this.title = title;
         this.regDate = regDate;
         this.content = content;
-    }
-
-    public static BoardDTO fromEntity(Board board) {
-        return BoardDTO.builder()
-                .id(board.getId())
-                .writer(board.getWriter())
-                .whiskeyId(board.getWhiskeyId())
-                .title(board.getTitle())
-                .regDate(board.getRegDate())
-                .content(board.getContent())
-                .build();
-    }
-
-    // DTO -> Entity 변환
-    public Board toEntity() {
-        return Board.builder()
-                .writer(this.writer)
-                .whiskeyId(this.whiskeyId)
-                .title(this.title)
-                .regDate(this.regDate)
-                .content(this.content)
-                .build();
     }
 }

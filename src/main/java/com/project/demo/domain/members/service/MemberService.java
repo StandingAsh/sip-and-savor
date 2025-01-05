@@ -3,7 +3,6 @@ package com.project.demo.domain.members.service;
 import com.project.demo.domain.members.dto.*;
 import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.members.repository.MemberRepository;
-import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,27 +24,19 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
-    public void join(MemberDTO memberDto) {
-
-        Member member = Member.builder()
-                .name(memberDto.getName())
-                .userId(memberDto.getUserId())
-                .password(passwordEncoder.encode(memberDto.getPassword()))
-                .email(memberDto.getEmail())
-                .build();
-
-        memberRepository.save(member);
+    public void join(JoinRequestDTO memberResponseDto) {
+        memberRepository.save(createMemberEntity(memberResponseDto));
     }
 
     // 회원탈퇴
-    public void delete(DeleteForm deleteForm) throws Exception {
+    public void delete(DeleteRequestDTO deleteRequestDTO) throws Exception {
 
         // todo: 비밀번호 검사, 예외 던지기
-        Member member = memberRepository.findByUserId(deleteForm.getUserId());
+        Member member = memberRepository.findByUserId(deleteRequestDTO.getUserId());
         if (member == null)
             throw new Exception("회원 정보를 찾을 수 없습니다.");
 
-        if (!passwordEncoder.matches(deleteForm.getPassword(), member.getPassword()))
+        if (!passwordEncoder.matches(deleteRequestDTO.getPassword(), member.getPassword()))
             throw new Exception("비밀번호가 일치하지 않습니다.");
 
         memberRepository.delete(member);
@@ -53,7 +44,7 @@ public class MemberService {
 
     // 회원 정보 변경
     @Transactional
-    public void updateMemberInfo(ChangeInfoForm form, String userId) throws Exception {
+    public void updateMemberInfo(ChangeInfoRequestDTO form, String userId) throws Exception {
 
         Member member = memberRepository.findByUserId(userId);
         if (!passwordEncoder.matches(form.getPassword(), member.getPassword()))
@@ -68,7 +59,7 @@ public class MemberService {
 
     // 비밀번호 변경
     @Transactional
-    public void updateMemberPassword(ChangePasswordForm form, String userId) throws Exception {
+    public void updateMemberPassword(ChangePasswordRequestDTO form, String userId) throws Exception {
 
         if (!memberRepository.existsByUserId(userId)) {
             log.info("회원정보를 찾을 수 없습니다.");
@@ -94,32 +85,41 @@ public class MemberService {
     }
 
     // 회원 아이디로 조회
-    public MemberDTO findByUserId(String userId) {
+    public MemberResponseDTO findByUserId(String userId) {
         Member member = memberRepository.findByUserId(userId);
-        return MemberDTO.builder()
+        return createResponseDTO(member);
+    }
+
+    // 회원 목록 조회
+    public List<MemberResponseDTO> findAllMembers() {
+
+        List<Member> members = memberRepository.findAll();
+        List<MemberResponseDTO> memberResponseDTOS = new ArrayList<>();
+
+        for (Member member : members) {
+            MemberResponseDTO dto = createResponseDTO(member);
+            memberResponseDTOS.add(dto);
+        }
+
+        return memberResponseDTOS;
+    }
+
+    // Utility Methods
+    private Member createMemberEntity(JoinRequestDTO memberResponseDto) {
+        return Member.builder()
+                .name(memberResponseDto.getName())
+                .userId(memberResponseDto.getUserId())
+                .password(passwordEncoder.encode(memberResponseDto.getPassword()))
+                .email(memberResponseDto.getEmail())
+                .build();
+    }
+
+    private static MemberResponseDTO createResponseDTO(Member member) {
+        return MemberResponseDTO.builder()
                 .name(member.getName())
                 .userId(member.getUserId())
                 .password(member.getPassword())
                 .email(member.getEmail())
                 .build();
-    }
-
-    // 회원 목록 조회
-    public List<MemberDTO> findAllMembers() {
-
-        List<Member> members = memberRepository.findAll();
-        List<MemberDTO> memberDTOs = new ArrayList<>();
-
-        for (Member member : members) {
-            MemberDTO dto = MemberDTO.builder()
-                    .name(member.getName())
-                    .userId(member.getUserId())
-                    .email(member.getEmail())
-                    .password(member.getPassword())
-                    .build();
-            memberDTOs.add(dto);
-        }
-
-        return memberDTOs;
     }
 }

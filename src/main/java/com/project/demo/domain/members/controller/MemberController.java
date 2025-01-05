@@ -1,10 +1,9 @@
 package com.project.demo.domain.members.controller;
 
-import com.project.demo.domain.members.dto.LoginForm;
-import com.project.demo.domain.members.dto.MemberForm;
+import com.project.demo.domain.members.dto.JoinRequestDTO;
+import com.project.demo.domain.members.dto.LoginRequestDTO;
 import com.project.demo.domain.members.service.MemberService;
 import com.project.demo.domain.members.validator.UserIdValidator;
-import com.project.demo.domain.members.dto.MemberDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,12 +28,12 @@ public class MemberController {
     // 회원 등록
     @GetMapping("/members/new")
     public String createForm(Model model) {
-        model.addAttribute("memberForm", new MemberForm());
+        model.addAttribute("joinRequestDTO", new JoinRequestDTO());
         return "members/createMemberForm";
     }
 
     @PostMapping("/members/new")
-    public String create(@Valid MemberForm memberForm, BindingResult result, Model model, Errors errors) {
+    public String create(@Valid JoinRequestDTO joinRequestDTO, BindingResult result, Model model, Errors errors) {
 
         // todo: Validation 로직 서비스로 리팩토링
         // 정규식 검사
@@ -43,20 +42,14 @@ public class MemberController {
         }
 
         // 중복 아이디 검사
-        userIdValidator.validate(memberForm, errors);
+        userIdValidator.validate(joinRequestDTO, errors);
         if (errors.hasErrors()) {
             model.addAttribute(errors.getFieldErrors());
             return "members/createMemberForm";
         }
 
         // 회원가입
-        MemberDTO memberDto = MemberDTO.builder()
-                .name(memberForm.getName())
-                .email(memberForm.getEmail())
-                .userId(memberForm.getUserId())
-                .password(memberForm.getPassword())
-                .build();
-        memberService.join(memberDto);
+        memberService.join(joinRequestDTO);
 
         return "redirect:/";
     }
@@ -66,7 +59,7 @@ public class MemberController {
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false) String exception,
                         Model model) {
-        model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("loginForm", new LoginRequestDTO());
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
 

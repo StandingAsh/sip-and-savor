@@ -1,6 +1,6 @@
 package com.project.demo.domain.members.validator;
 
-import com.project.demo.domain.members.dto.MemberForm;
+import com.project.demo.domain.members.dto.JoinRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -10,7 +10,7 @@ public abstract class AbstractValidator<T> implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(MemberForm.class);
+        return clazz.isAssignableFrom(JoinRequestDTO.class);
     }
 
     @Override
