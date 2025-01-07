@@ -19,8 +19,8 @@ import java.util.List;
 public class MemberService {
 
     private static final Logger log = LoggerFactory.getLogger(MemberService.class);
-    @Autowired
-    private MemberRepository memberRepository;
+
+    private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
