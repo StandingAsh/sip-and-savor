@@ -26,9 +26,7 @@ public class ProfileController {
 
     private final MemberService memberService;
     private final UserIdValidator userIdValidator;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @InitBinder("ChangeInfoRequestDTO")
     public void validatorBinder(WebDataBinder binder) {

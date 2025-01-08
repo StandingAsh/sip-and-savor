@@ -2,6 +2,7 @@ package com.project.demo.domain.whiskeys.service;
 
 import com.project.demo.domain.whiskeys.repository.WhiskeyRepository;
 import com.project.demo.domain.whiskeys.entity.Whiskey;
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,11 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class WhiskeyCrawlingService {
 
-    @Autowired
-    private WhiskeyRepository whiskeyRepository;
+    private final WhiskeyRepository whiskeyRepository;
 
     public void crawl() {
         System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER"));

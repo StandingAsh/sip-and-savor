@@ -4,6 +4,7 @@ import com.project.demo.domain.board.dto.BoardDTO;
 import com.project.demo.domain.board.service.BoardService;
 import com.project.demo.domain.whiskeys.dto.WhiskeyDTO;
 import com.project.demo.domain.whiskeys.service.WhiskeyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class WhiskeyController {
 
-    @Autowired
-    private WhiskeyService whiskeyService;
-    @Autowired
-    private BoardService boardService;
+    private final WhiskeyService whiskeyService;
+    private final BoardService boardService;
 
     @GetMapping("/whiskeys")
     public String display(Model model) {

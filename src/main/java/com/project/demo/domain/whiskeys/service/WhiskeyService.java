@@ -1,21 +1,19 @@
 package com.project.demo.domain.whiskeys.service;
 
-import com.project.demo.domain.members.dto.MemberResponseDTO;
-import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.whiskeys.dto.WhiskeyDTO;
 import com.project.demo.domain.whiskeys.repository.WhiskeyRepository;
 import com.project.demo.domain.whiskeys.entity.Whiskey;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class WhiskeyService {
 
-    @Autowired
-    private WhiskeyRepository whiskeyRepository;
+    private final WhiskeyRepository whiskeyRepository;
 
     public List<WhiskeyDTO> findAllWhiskeys() {
 
