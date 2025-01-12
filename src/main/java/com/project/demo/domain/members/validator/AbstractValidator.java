@@ -1,6 +1,6 @@
 package com.project.demo.domain.members.validator;
 
-import com.project.demo.domain.members.dto.JoinRequestDTO;
+import com.project.demo.domain.members.dto.request.JoinRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

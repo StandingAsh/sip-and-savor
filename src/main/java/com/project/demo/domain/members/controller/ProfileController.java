@@ -1,12 +1,15 @@
 package com.project.demo.domain.members.controller;
 
 import com.project.demo.domain.members.dto.*;
+import com.project.demo.domain.members.dto.request.ChangeInfoRequestDTO;
+import com.project.demo.domain.members.dto.request.ChangePasswordRequestDTO;
+import com.project.demo.domain.members.dto.request.DeleteRequestDTO;
+import com.project.demo.domain.members.dto.response.MemberResponseDTO;
 import com.project.demo.domain.members.service.MemberService;
 import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

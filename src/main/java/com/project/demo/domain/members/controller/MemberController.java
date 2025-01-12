@@ -1,7 +1,7 @@
 package com.project.demo.domain.members.controller;
 
-import com.project.demo.domain.members.dto.JoinRequestDTO;
-import com.project.demo.domain.members.dto.LoginRequestDTO;
+import com.project.demo.domain.members.dto.request.JoinRequestDTO;
+import com.project.demo.domain.members.dto.request.LoginRequestDTO;
 import com.project.demo.domain.members.service.MemberService;
 import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.validation.Valid;

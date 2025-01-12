@@ -6,7 +6,6 @@ import com.project.demo.domain.board.repository.BoardRepository;
 import com.project.demo.domain.members.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,34 +18,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    BoardRepository boardRepository;
-    @Autowired
-    MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     public void save(BoardDTO boardDTO) {
         boardRepository.save(createBoardEntity(boardDTO));
     }
 
-    //기존 List<Board>값으로 넘어가지만 페이징 설정을 해주면 Page<Board>로 넘어간다.
+    // 기존 List<Board>값으로 넘어가지만 페이징 설정을 해주면 Page<Board>로 넘어간다.
     public Page<Board> getBoardList(Pageable pageable) {
         return boardRepository.findAll(pageable);
     }
 
+    // createBoardDTO 메소드 끌어와서 board -> boardDTO 매핑된 Page 반환
     public Page<BoardDTO> getBoardListByWhiskeyId(Long id, Pageable pageable) {
-
-        List<Board> list = boardRepository.findAllByWhiskeyId(id);
-        List<BoardDTO> dtoList = new ArrayList<>();
-        for (Board board : list) {
-            BoardDTO boardDTO = createBoardDTO(board);
-            dtoList.add(boardDTO);
-        }
-
-        // List to Page
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), dtoList.size());
-
-        return new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
+        return boardRepository.findAllByWhiskeyId(id, pageable).map(BoardService::createBoardDTO);
     }
 
     public BoardDTO findBoardById(Long id) throws Exception {

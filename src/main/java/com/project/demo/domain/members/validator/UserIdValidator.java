@@ -1,6 +1,6 @@
 package com.project.demo.domain.members.validator;
 
-import com.project.demo.domain.members.dto.JoinRequestDTO;
+import com.project.demo.domain.members.dto.request.JoinRequestDTO;
 import com.project.demo.domain.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
