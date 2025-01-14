@@ -1,9 +1,13 @@
 package com.project.demo.domain.members.entity;
 
+import com.project.demo.domain.board.entity.Board;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,6 +27,10 @@ public class Member {
     @Column(nullable = false)
     private String email;
 
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "writer", orphanRemoval = true)
+    private List<Board> boardList = new ArrayList<>();
+
     @Builder
     public Member(String name, String userId, String password, String email) {
 
@@ -40,5 +48,17 @@ public class Member {
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void addBoard(Board board) {
+        boardList.add(board);
+    }
+
+    public void removeBoard(Board board) {
+        boardList.remove(board);
+    }
+
+    public void removeBoards() {
+        boardList.clear();
     }
 }

@@ -42,6 +42,7 @@ public class MemberService {
         if (!passwordEncoder.matches(deleteRequestDTO.getPassword(), member.getPassword()))
             throw new Exception("비밀번호가 일치하지 않습니다.");
 
+        member.removeBoards();
         memberRepository.delete(member);
     }
 

@@ -18,7 +18,9 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     public void save(BoardDTO boardDTO) {
-        boardRepository.save(createBoardEntity(boardDTO));
+        Board board = createBoardEntity(boardDTO);
+        board.getWriter().addBoard(board);
+        boardRepository.save(board);
     }
 
     // 기존 List<Board>값으로 넘어가지만 페이징 설정을 해주면 Page<Board>로 넘어간다.
@@ -40,8 +42,14 @@ public class BoardService {
     }
 
     public Long deleteBoardById(Long id) {
-        Long whiskeyId = boardRepository.findById(id).get().getWhiskeyId();
-        boardRepository.deleteById(id);
+
+        Board board = boardRepository.findById(id).orElse(null);
+        assert board != null;
+
+        board.getWriter().removeBoard(board);
+        Long whiskeyId = board.getWhiskeyId();
+        boardRepository.delete(board);
+
         return whiskeyId;
     }
 
@@ -67,6 +75,7 @@ public class BoardService {
                 .build();
     }
 
+    // DTO -> Entity 생성
     private static BoardDTO createBoardDTO(Board board) {
 
         return BoardDTO.builder()
