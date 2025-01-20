@@ -1,5 +1,6 @@
 package com.project.demo.domain.members.service;
 
+import com.project.demo.domain.board.entity.Board;
 import com.project.demo.domain.members.dto.request.ChangeInfoRequestDTO;
 import com.project.demo.domain.members.dto.request.ChangePasswordRequestDTO;
 import com.project.demo.domain.members.dto.request.DeleteRequestDTO;
@@ -106,6 +107,18 @@ public class MemberService {
         }
 
         return memberResponseDTOS;
+    }
+
+    // Whiskey ID 반환
+    public List<Long> getMyWhiskeyIdList(String userId) {
+        List<Long> whiskeyIds = new ArrayList<>();
+        for (Board board : memberRepository.findByUserId(userId).getBoardList()) {
+            Long id = board.getWhiskeyId();
+            if (!whiskeyIds.contains(id))
+                whiskeyIds.add(id);
+        }
+
+        return whiskeyIds;
     }
 
     // Utility Methods

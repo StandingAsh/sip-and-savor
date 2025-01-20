@@ -5,8 +5,11 @@ import com.project.demo.domain.members.dto.request.ChangeInfoRequestDTO;
 import com.project.demo.domain.members.dto.request.ChangePasswordRequestDTO;
 import com.project.demo.domain.members.dto.request.DeleteRequestDTO;
 import com.project.demo.domain.members.dto.response.MemberResponseDTO;
+import com.project.demo.domain.members.dto.response.MyPageResponse;
 import com.project.demo.domain.members.service.MemberService;
 import com.project.demo.domain.members.validator.UserIdValidator;
+import com.project.demo.domain.whiskeys.dto.WhiskeyDTO;
+import com.project.demo.domain.whiskeys.service.WhiskeyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +25,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ProfileController {
 
     private final MemberService memberService;
+    private final WhiskeyService whiskeyService;
     private final UserIdValidator userIdValidator;
     private final AuthenticationManager authenticationManager;
 
@@ -44,8 +51,16 @@ public class ProfileController {
             Authentication auth =
                     SecurityContextHolder.getContext().getAuthentication();
 
-            UserDetailsAdapter user = (UserDetailsAdapter) auth.getPrincipal();
-            model.addAttribute("user", user);
+            String userId = auth.getName();
+            List<Long> whiskeyIds = memberService.getMyWhiskeyIdList(userId);
+
+            List<WhiskeyDTO> whiskeys = new ArrayList<>();
+            for (Long whiskeyId : whiskeyIds) {
+                whiskeys.add(whiskeyService.getWhiskeyById(whiskeyId));
+            }
+
+            MyPageResponse response = new MyPageResponse(userId, whiskeys);
+            model.addAttribute("myPage", response);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
