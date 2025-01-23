@@ -75,7 +75,7 @@
 <body>
 <div class="form-container">
     <h1>회원가입</h1>
-    <form action="/members/new" method="post" th:object="${joinRequestDTO}">
+    <form action="/members/new" method="post" th:object="${joinRequest}">
         <!-- 이름 입력 -->
         <input type="text" th:field="*{name}" id="name" name="name" class="form-control" placeholder="이름을 입력하세요" required>
 

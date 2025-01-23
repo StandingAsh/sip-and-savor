@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChangePasswordRequestDTO {
+public class ChangePasswordRequest {
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}"

@@ -1,7 +1,7 @@
 package com.project.demo.domain.members.controller;
 
-import com.project.demo.domain.members.dto.request.JoinRequestDTO;
-import com.project.demo.domain.members.dto.request.LoginRequestDTO;
+import com.project.demo.domain.members.dto.request.JoinRequest;
+import com.project.demo.domain.members.dto.request.LoginRequest;
 import com.project.demo.domain.members.service.MemberService;
 import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
@@ -28,12 +28,12 @@ public class MemberController {
     // 회원 등록
     @GetMapping("/members/new")
     public String createForm(Model model) {
-        model.addAttribute("joinRequestDTO", new JoinRequestDTO());
+        model.addAttribute("joinRequest", new JoinRequest());
         return "members/createMemberForm";
     }
 
     @PostMapping("/members/new")
-    public String create(@Valid JoinRequestDTO joinRequestDTO, BindingResult result, Model model, Errors errors) {
+    public String create(@Valid JoinRequest joinRequest, BindingResult result, Model model, Errors errors) {
 
         // todo: Validation 로직 서비스로 리팩토링
         // 정규식 검사
@@ -42,14 +42,14 @@ public class MemberController {
         }
 
         // 중복 아이디 검사
-        userIdValidator.validate(joinRequestDTO, errors);
+        userIdValidator.validate(joinRequest, errors);
         if (errors.hasErrors()) {
             model.addAttribute(errors.getFieldErrors());
             return "members/createMemberForm";
         }
 
         // 회원가입
-        memberService.join(joinRequestDTO);
+        memberService.join(joinRequest);
 
         return "redirect:/";
     }
@@ -59,7 +59,7 @@ public class MemberController {
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false) String exception,
                         Model model) {
-        model.addAttribute("loginForm", new LoginRequestDTO());
+        model.addAttribute("loginForm", new LoginRequest());
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
 

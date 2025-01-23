@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class MemberResponseDTO {
+public class MemberResponse {
 
     private Long id;
     private String name;
@@ -15,7 +15,7 @@ public class MemberResponseDTO {
     private String email;
 
     @Builder
-    public MemberResponseDTO(String name, String userId, String password, String email) {
+    public MemberResponse(String name, String userId, String password, String email) {
 
         this.name = name;
         this.userId = userId;

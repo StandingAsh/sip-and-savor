@@ -81,7 +81,7 @@
 <body>
 <div class="delete-container">
     <h2>회원 탈퇴</h2>
-    <form action="/mypage/delete" method="post" th:object="${deleteRequestDTO}">
+    <form action="/mypage/delete" method="post" th:object="${deleteRequest}">
         <div th:if="exception">
             <p id="authenticated" style="color:red;" th:text="${exception}"></p>
         </div>

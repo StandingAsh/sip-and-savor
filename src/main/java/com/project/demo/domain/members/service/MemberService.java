@@ -1,11 +1,11 @@
 package com.project.demo.domain.members.service;
 
 import com.project.demo.domain.board.entity.Board;
-import com.project.demo.domain.members.dto.request.ChangeInfoRequestDTO;
-import com.project.demo.domain.members.dto.request.ChangePasswordRequestDTO;
-import com.project.demo.domain.members.dto.request.DeleteRequestDTO;
-import com.project.demo.domain.members.dto.request.JoinRequestDTO;
-import com.project.demo.domain.members.dto.response.MemberResponseDTO;
+import com.project.demo.domain.members.dto.request.ChangeInfoRequest;
+import com.project.demo.domain.members.dto.request.ChangePasswordRequest;
+import com.project.demo.domain.members.dto.request.DeleteRequest;
+import com.project.demo.domain.members.dto.request.JoinRequest;
+import com.project.demo.domain.members.dto.response.MemberResponse;
 import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.members.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -28,19 +28,19 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
-    public void join(JoinRequestDTO memberResponseDto) {
+    public void join(JoinRequest memberResponseDto) {
         memberRepository.save(createMemberEntity(memberResponseDto));
     }
 
     // 회원탈퇴
-    public void delete(DeleteRequestDTO deleteRequestDTO) throws Exception {
+    public void delete(DeleteRequest deleteRequest) throws Exception {
 
         // todo: 비밀번호 검사, 예외 던지기
-        Member member = memberRepository.findByUserId(deleteRequestDTO.getUserId());
+        Member member = memberRepository.findByUserId(deleteRequest.getUserId());
         if (member == null)
             throw new Exception("회원 정보를 찾을 수 없습니다.");
 
-        if (!passwordEncoder.matches(deleteRequestDTO.getPassword(), member.getPassword()))
+        if (!passwordEncoder.matches(deleteRequest.getPassword(), member.getPassword()))
             throw new Exception("비밀번호가 일치하지 않습니다.");
 
         member.removeBoards();
@@ -49,7 +49,7 @@ public class MemberService {
 
     // 회원 정보 변경
     @Transactional
-    public void updateMemberInfo(ChangeInfoRequestDTO form, String userId) throws Exception {
+    public void updateMemberInfo(ChangeInfoRequest form, String userId) throws Exception {
 
         Member member = memberRepository.findByUserId(userId);
         if (!passwordEncoder.matches(form.getPassword(), member.getPassword()))
@@ -64,7 +64,7 @@ public class MemberService {
 
     // 비밀번호 변경
     @Transactional
-    public void updateMemberPassword(ChangePasswordRequestDTO form, String userId) throws Exception {
+    public void updateMemberPassword(ChangePasswordRequest form, String userId) throws Exception {
 
         if (!memberRepository.existsByUserId(userId)) {
             log.info("회원정보를 찾을 수 없습니다.");
@@ -90,23 +90,23 @@ public class MemberService {
     }
 
     // 회원 아이디로 조회
-    public MemberResponseDTO findByUserId(String userId) {
+    public MemberResponse findByUserId(String userId) {
         Member member = memberRepository.findByUserId(userId);
         return createResponseDTO(member);
     }
 
     // 회원 목록 조회
-    public List<MemberResponseDTO> findAllMembers() {
+    public List<MemberResponse> findAllMembers() {
 
         List<Member> members = memberRepository.findAll();
-        List<MemberResponseDTO> memberResponseDTOS = new ArrayList<>();
+        List<MemberResponse> memberResponses = new ArrayList<>();
 
         for (Member member : members) {
-            MemberResponseDTO dto = createResponseDTO(member);
-            memberResponseDTOS.add(dto);
+            MemberResponse dto = createResponseDTO(member);
+            memberResponses.add(dto);
         }
 
-        return memberResponseDTOS;
+        return memberResponses;
     }
 
     // Whiskey ID 반환
@@ -122,17 +122,17 @@ public class MemberService {
     }
 
     // Utility Methods
-    private Member createMemberEntity(JoinRequestDTO memberResponseDto) {
+    private Member createMemberEntity(JoinRequest memberDto) {
         return Member.builder()
-                .name(memberResponseDto.getName())
-                .userId(memberResponseDto.getUserId())
-                .password(passwordEncoder.encode(memberResponseDto.getPassword()))
-                .email(memberResponseDto.getEmail())
+                .name(memberDto.getName())
+                .userId(memberDto.getUserId())
+                .password(passwordEncoder.encode(memberDto.getPassword()))
+                .email(memberDto.getEmail())
                 .build();
     }
 
-    private static MemberResponseDTO createResponseDTO(Member member) {
-        return MemberResponseDTO.builder()
+    private static MemberResponse createResponseDTO(Member member) {
+        return MemberResponse.builder()
                 .name(member.getName())
                 .userId(member.getUserId())
                 .password(member.getPassword())

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class JoinRequestDTO {
+public class JoinRequest {
 
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
