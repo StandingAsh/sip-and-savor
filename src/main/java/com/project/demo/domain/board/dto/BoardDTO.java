@@ -16,6 +16,7 @@ public class BoardDTO {
     private String title;
     private LocalDate regDate;
     private String content;
+    private boolean checking;
 
     @Builder
     public BoardDTO(Long id, String writer, Long whiskeyId, String title, LocalDate regDate, String content) {

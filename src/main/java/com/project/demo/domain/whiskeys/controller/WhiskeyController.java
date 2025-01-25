@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class WhiskeyController {
     @GetMapping("/whiskeys/{id}")
     public String displayDetails(@PathVariable(name = "id") Long whiskeyId,
                                  @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                 Model model) {
+                                 Model model)  {
 
         WhiskeyDTO whiskey = whiskeyService.getWhiskeyById(whiskeyId);
         model.addAttribute("whiskey", whiskey);
@@ -54,6 +55,12 @@ public class WhiskeyController {
         int endPage = Math.min(nowPage + 9, boardList.getTotalPages());
         if (endPage == 0)
             endPage = 1;
+
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        boardList.forEach(board -> {
+            boolean checking = userName.equals(board.getWriter());
+            board.setChecking(checking); // BoardDTO에 isWriter 필드 추가
+        });
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("nowPage", nowPage);
