@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -37,13 +38,18 @@ public class WhiskeyController {
 
     @GetMapping("/whiskeys/{id}")
     public String displayDetails(@PathVariable(name = "id") Long whiskeyId,
+                                 @RequestParam(defaultValue = "false") Boolean filter,
                                  @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                  Model model)  {
 
         WhiskeyDTO whiskey = whiskeyService.getWhiskeyById(whiskeyId);
         model.addAttribute("whiskey", whiskey);
 
-        Page<BoardDTO> boardList = boardService.getBoardListByWhiskeyId(whiskeyId, pageable);
+        // 체크박스 여부로 보여줄 정보 다르게
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Page<BoardDTO> boardList = filter
+                ? boardService.getBoardListByWhiskeyIdAndWriter(whiskeyId, userName, pageable)
+                : boardService.getBoardListByWhiskeyId(whiskeyId, pageable);
 
         // 페이지블럭 처리
         // 1을 더해주는 이유: Pageable 은 0부터라 1을 처리하려면 1을 더해서 시작해주어야 함
@@ -56,16 +62,11 @@ public class WhiskeyController {
         if (endPage == 0)
             endPage = 1;
 
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        boardList.forEach(board -> {
-            boolean checking = userName.equals(board.getWriter());
-            board.setChecking(checking); // BoardDTO에 isWriter 필드 추가
-        });
-
         model.addAttribute("boardList", boardList);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("filter", filter);
 
         return "whiskeys/whiskeyDetail";
     }

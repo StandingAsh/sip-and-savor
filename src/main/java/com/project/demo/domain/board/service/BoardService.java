@@ -30,7 +30,13 @@ public class BoardService {
 
     // createBoardDTO 메소드 끌어와서 board -> boardDTO 매핑된 Page 반환
     public Page<BoardDTO> getBoardListByWhiskeyId(Long id, Pageable pageable) {
-        return boardRepository.findAllByWhiskeyId(id, pageable).map(BoardService::createBoardDTO);
+        return boardRepository.findAllByWhiskeyId(id, pageable)
+                .map(BoardService::createBoardDTO);
+    }
+
+    public Page<BoardDTO> getBoardListByWhiskeyIdAndWriter(Long id, String writer, Pageable pageable) {
+        return boardRepository.findAllByWhiskeyIdAndWriter_UserId(id, writer, pageable)
+                .map(BoardService::createBoardDTO);
     }
 
     public BoardDTO findBoardById(Long id) throws Exception {

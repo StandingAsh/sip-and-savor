@@ -61,16 +61,29 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">게시글 리스트</h1>
+    <form id="filterForm" th:action="@{/whiskeys/{id}(id=${whiskey.id})}" th:method="get">
+        <label>
+            <input type="checkbox" name="filter" id="filterCheckBox"
+                   th:checked="${filter}">
+            내가 쓴 게시글만 보기
+        </label>
+    </form>
+
+    <script>
+        document.getElementById('filterCheckBox').addEventListener('change', function() {
+            const form = document.getElementById('filterForm');
+            form.submit();
+        });
+    </script>
+
     <div class="d-flex justify-content-end mb-3">
         <a th:href="@{/boards/writeBoard/{whiskeyId}(whiskeyId=${whiskey.id})}" class="btn btn-success">글 작성하기</a>
     </div>
     <table class="table table-striped table-hover text-center">
         <thead class="table-primary">
         <tr>
-            <th scope="col">내가 쓴 게시글</th>
             <th scope="col">번호</th>
             <th scope="col">작성자</th>
-            <th scope="col">위스키 고유번호</th>
             <th scope="col">제목</th>
             <th scope="col">작성일</th>
             <th scope="col">내용</th>
@@ -78,10 +91,8 @@
         </thead>
         <tbody>
         <tr th:each="board : ${boardList}">
-            <td><input type="checkbox" th:name="check" th:id="check" th:checked="${board.checking}"></td>
             <td th:text="${board.id}"></td>
             <td th:text="${board.writer}"></td>
-            <td th:text="${board.whiskeyId}"></td>
             <td><a th:href="@{/boards/boardView/{boardId}(boardId=${board.id})}" th:text="${board.title}"></a></td>
             <td th:text="${board.regDate}"></td>
             <td th:text="${board.content}"></td>
