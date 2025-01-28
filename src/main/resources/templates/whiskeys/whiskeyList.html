@@ -54,6 +54,49 @@
             padding-bottom: 10px;
         }
 
+        /* 검색 폼 스타일 */
+        form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* 텍스트 입력 스타일 */
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #dddddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* 드롭다운 스타일 */
+        select {
+            padding: 10px;
+            border: 2px solid #dddddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -136,6 +179,20 @@
     <a href="/" class="home-button">홈으로</a>
 
     <h2 class="table-header">Whiskey List</h2>
+    <form th:action="@{/whiskeys}" method="get">
+        <!-- 검색 텍스트박스 -->
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="이름으로 검색">
+
+        <!-- 카테고리 드롭다운 -->
+        <select name="category">
+            <option value="" selected>전체</option>
+            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}"></option>
+        </select>
+
+        <!-- 검색 버튼 -->
+        <button type="submit">검색</button>
+    </form>
+
     <table>
         <thead>
         <tr>

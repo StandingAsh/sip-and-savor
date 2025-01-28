@@ -6,7 +6,6 @@ import com.project.demo.domain.whiskeys.entity.Whiskey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,17 +14,14 @@ public class WhiskeyService {
 
     private final WhiskeyRepository whiskeyRepository;
 
-    public List<WhiskeyDTO> findAllWhiskeys() {
+    public List<WhiskeyDTO> findWhiskeys(String keyword) {
+        return whiskeyRepository.findAllByNameContaining(keyword).stream()
+                .map(this::createWhiskeyDTO).toList();
+    }
 
-        List<Whiskey> whiskeyList = whiskeyRepository.findAll();
-        List<WhiskeyDTO> dtoList = new ArrayList<>();
-
-        for (Whiskey whiskey : whiskeyList) {
-            WhiskeyDTO whiskeyDTO = createWhiskeyDTO(whiskey);
-            dtoList.add(whiskeyDTO);
-        }
-
-        return dtoList;
+    public List<WhiskeyDTO> findWhiskeysByCategory(String category, String keyword) {
+        return whiskeyRepository.findAllByCategoryAndNameContaining(category, keyword).stream()
+                .map(this::createWhiskeyDTO).toList();
     }
 
     public WhiskeyDTO getWhiskeyById(Long id) {

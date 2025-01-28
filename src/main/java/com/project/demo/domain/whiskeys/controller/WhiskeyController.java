@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -28,10 +29,27 @@ public class WhiskeyController {
     private final BoardService boardService;
 
     @GetMapping("/whiskeys")
-    public String display(Model model) {
+    public String display(Model model,
+                          @RequestParam(value = "keyword", defaultValue = "") String keyword,
+                          @RequestParam(value = "category", required = false) String category) {
 
-        List<WhiskeyDTO> whiskeyList = whiskeyService.findAllWhiskeys();
+        List<WhiskeyDTO> whiskeyList;
+        if (category == null || category.isEmpty()) {
+            whiskeyList = whiskeyService.findWhiskeys(keyword);
+        } else {
+            whiskeyList = whiskeyService.findWhiskeysByCategory(category, keyword);
+        }
+
+        model.addAttribute("keyword", keyword);
         model.addAttribute("whiskeyList", whiskeyList);
+
+        List<String> categories = new ArrayList<>();
+        categories.add("싱글몰트");
+        categories.add("블렌드");
+        categories.add("버번");
+        categories.add("라이");
+        model.addAttribute("categories", categories);
+        model.addAttribute("category", category);
 
         return "whiskeys/whiskeyList";
     }
@@ -40,7 +58,7 @@ public class WhiskeyController {
     public String displayDetails(@PathVariable(name = "id") Long whiskeyId,
                                  @RequestParam(defaultValue = "false") Boolean filter,
                                  @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                 Model model)  {
+                                 Model model) {
 
         WhiskeyDTO whiskey = whiskeyService.getWhiskeyById(whiskeyId);
         model.addAttribute("whiskey", whiskey);
