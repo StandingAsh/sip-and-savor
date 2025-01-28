@@ -45,7 +45,7 @@ public class WhiskeyController {
         WhiskeyDTO whiskey = whiskeyService.getWhiskeyById(whiskeyId);
         model.addAttribute("whiskey", whiskey);
 
-        // 체크박스 여부로 보여줄 정보 다르게
+        // 체크박스 체크 여부로 보드 리스트 다르게 받아오기
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         Page<BoardDTO> boardList = filter
                 ? boardService.getBoardListByWhiskeyIdAndWriter(whiskeyId, userName, pageable)
