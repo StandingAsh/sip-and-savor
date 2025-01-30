@@ -56,7 +56,7 @@ public class WhiskeyController {
 
     @GetMapping("/whiskeys/{id}")
     public String displayDetails(@PathVariable(name = "id") Long whiskeyId,
-                                 @RequestParam(defaultValue = "false") Boolean filter,
+                                 @RequestParam(defaultValue = "false") Boolean checked,
                                  @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                  Model model) {
 
@@ -65,7 +65,7 @@ public class WhiskeyController {
 
         // 체크박스 체크 여부로 보드 리스트 다르게 받아오기
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Page<BoardDTO> boardList = filter
+        Page<BoardDTO> boardList = checked
                 ? boardService.getBoardListByWhiskeyIdAndWriter(whiskeyId, userName, pageable)
                 : boardService.getBoardListByWhiskeyId(whiskeyId, pageable);
 
@@ -84,7 +84,7 @@ public class WhiskeyController {
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("filter", filter);
+        model.addAttribute("checked", checked);
 
         return "whiskeys/whiskeyDetail";
     }

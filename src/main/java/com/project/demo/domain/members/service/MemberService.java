@@ -28,8 +28,11 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
-    public void join(JoinRequest memberResponseDto) {
-        memberRepository.save(createMemberEntity(memberResponseDto));
+    public void join(JoinRequest joinRequest) throws Exception {
+        if(memberRepository.existsByUserId(joinRequest.getUserId()))
+            throw new Exception("이미 존재하는 아이디입니다.");
+
+        memberRepository.save(createMemberEntity(joinRequest));
     }
 
     // 회원탈퇴

@@ -85,6 +85,10 @@
             <p style="color:red;"><a th:errors="*{userId}"></a></p>
         </div>
 
+        <div th:if="${userIdDuplicated}">
+            <p style="color:red;"><a th:text="${userIdDuplicated}"></a></p>
+        </div>
+
         <!-- 비밀번호 입력 -->
         <input type="password" th:field="*{password}" id="Password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
         <div th:if="${#fields.hasErrors('password')}">

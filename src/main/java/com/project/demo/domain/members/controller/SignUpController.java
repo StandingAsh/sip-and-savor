@@ -2,7 +2,6 @@ package com.project.demo.domain.members.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +14,10 @@ public class SignUpController {
     @GetMapping("/")
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isLoggedIn = !auth.getName().equals("anonymousUser");
+        boolean isLoggedIn = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_USER"));
         model.addAttribute("isLoggedIn", isLoggedIn);
-        log.info("Current user: {}", auth.getName());
+        log.info("Current Authorities: {}", auth.getAuthorities());
         return "home";
     }
 

@@ -3,27 +3,21 @@ package com.project.demo.domain.members.controller;
 import com.project.demo.domain.members.dto.request.JoinRequest;
 import com.project.demo.domain.members.dto.request.LoginRequest;
 import com.project.demo.domain.members.service.MemberService;
-import com.project.demo.domain.members.validator.UserIdValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    private final UserIdValidator userIdValidator;
-
-    @InitBinder("MemberForm")
-    public void validatorBinder(WebDataBinder binder) {
-        binder.addValidators(userIdValidator);
-    }
 
     // 회원 등록
     @GetMapping("/members/new")
@@ -35,21 +29,19 @@ public class MemberController {
     @PostMapping("/members/new")
     public String create(@Valid JoinRequest joinRequest, BindingResult result, Model model, Errors errors) {
 
-        // todo: Validation 로직 서비스로 리팩토링
         // 정규식 검사
         if (result.hasErrors()) {
             return "members/createMemberForm";
         }
 
-        // 중복 아이디 검사
-        userIdValidator.validate(joinRequest, errors);
-        if (errors.hasErrors()) {
-            model.addAttribute(errors.getFieldErrors());
+        // 회원가입
+        try {
+            memberService.join(joinRequest);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            model.addAttribute("userIdDuplicated", e.getMessage());
             return "members/createMemberForm";
         }
-
-        // 회원가입
-        memberService.join(joinRequest);
 
         return "redirect:/";
     }
@@ -59,6 +51,7 @@ public class MemberController {
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false) String exception,
                         Model model) {
+
         model.addAttribute("loginForm", new LoginRequest());
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);

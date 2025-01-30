@@ -44,11 +44,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="whiskey : ${whiskey}">
+        <tr>
             <td th:text="${whiskey.name}"></td>
-            <td>
-                <img th:src="${whiskey.imgUrl}" class="table-img" alt="이미지 표시 불가">
-            </td>
+            <td><img th:src="${whiskey.imgUrl}" class="table-img" alt="이미지 표시 불가"></td>
             <td th:text="${whiskey.category}"></td>
             <td th:text="${whiskey.abv}"></td>
             <td th:text="${whiskey.year}"></td>
@@ -61,10 +59,10 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">게시글 리스트</h1>
-    <form id="filterForm" th:action="@{/whiskeys/{id}(id=${whiskey.id})}" th:method="get">
+    <form id="checkBoxForm" th:action="@{/whiskeys/{id}(id=${whiskey.id})}" th:method="get">
         <label>
-            <input type="checkbox" name="filter" id="filterCheckBox"
-                   th:checked="${filter}">
+            <input type="checkbox" name="checked" id="filterCheckBox"
+                   th:checked="${checked}">
             내가 쓴 게시글만 보기
         </label>
     </form>
@@ -72,7 +70,7 @@
     <!-- 체크박스 상태 변동 시 컨트롤러로 폼 자동 제출 스크립트 -->
     <script>
         document.getElementById('filterCheckBox').addEventListener('change', function() {
-            const form = document.getElementById('filterForm');
+            const form = document.getElementById('checkBoxForm');
             form.submit();
         });
     </script>
@@ -106,18 +104,18 @@
         <ul class="pagination justify-content-center">
             <!-- 이전 버튼 -->
             <li class="page-item" th:classappend="${startPage > 1} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${startPage - 2})}" aria-label="Previous">
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${startPage - 2}, checked=${checked})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <!-- 페이지 번호 -->
             <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
                 th:classappend="${page == nowPage} ? 'active' : ''">
-                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${page - 1})}" th:text="${page}"></a>
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${page - 1}, checked=${checked})}" th:text="${page}"></a>
             </li>
             <!-- 다음 버튼 -->
             <li class="page-item" th:classappend="${endPage < boardList.totalPages} ? '' : 'disabled'">
-                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${endPage})}" aria-label="Next">
+                <a class="page-link" th:href="@{/whiskeys/{id}(id=${whiskey.id}, page=${endPage}, checked=${checked})}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
