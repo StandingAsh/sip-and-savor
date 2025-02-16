@@ -6,7 +6,6 @@ import com.project.demo.domain.members.dto.request.DeleteRequest;
 import com.project.demo.domain.members.dto.response.MemberResponse;
 import com.project.demo.domain.members.dto.response.MyPageResponse;
 import com.project.demo.domain.members.service.MemberService;
-import com.project.demo.domain.members.validator.UserIdValidator;
 import com.project.demo.domain.whiskeys.dto.WhiskeyDTO;
 import com.project.demo.domain.whiskeys.service.WhiskeyService;
 import jakarta.validation.Valid;
@@ -34,13 +33,7 @@ public class ProfileController {
 
     private final MemberService memberService;
     private final WhiskeyService whiskeyService;
-    private final UserIdValidator userIdValidator;
     private final AuthenticationManager authenticationManager;
-
-    @InitBinder("ChangeInfoRequest")
-    public void validatorBinder(WebDataBinder binder) {
-        binder.addValidators(userIdValidator);
-    }
 
     // 로그인 성공
     @GetMapping("/mypage")
@@ -88,7 +81,6 @@ public class ProfileController {
     @PostMapping("/mypage/change-info")
     public String changeInfo(@Valid ChangeInfoRequest changeInfoRequest, BindingResult result, Model model) {
 
-        // todo: validation 로직 service 로 이동 필요
         if (result.hasErrors()) {
             log.error(result.getAllErrors().toString());
             return "/members/profile/changeInfo";

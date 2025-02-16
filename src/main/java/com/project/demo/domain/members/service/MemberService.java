@@ -10,26 +10,24 @@ import com.project.demo.domain.members.entity.Member;
 import com.project.demo.domain.members.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
-    private static final Logger log = LoggerFactory.getLogger(MemberService.class);
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     // 회원가입
     public void join(JoinRequest joinRequest) throws Exception {
-        if(memberRepository.existsByUserId(joinRequest.getUserId()))
+        if (memberRepository.existsByUserId(joinRequest.getUserId()))
             throw new Exception("이미 존재하는 아이디입니다.");
 
         memberRepository.save(createMemberEntity(joinRequest));
