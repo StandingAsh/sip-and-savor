@@ -18,9 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
@@ -57,7 +55,7 @@ public class ProfileController {
             log.error(e.getMessage());
         }
 
-        return "/members/profile/mypage";
+        return "members/profile/mypage";
     }
 
     // 회원 정보 수정
@@ -75,7 +73,7 @@ public class ProfileController {
         changeInfoRequest.setEmail(memberResponse.getEmail());
 
         model.addAttribute("changeInfoRequest", changeInfoRequest);
-        return "/members/profile/changeInfo";
+        return "members/profile/changeInfo";
     }
 
     @PostMapping("/mypage/change-info")
@@ -83,7 +81,7 @@ public class ProfileController {
 
         if (result.hasErrors()) {
             log.error(result.getAllErrors().toString());
-            return "/members/profile/changeInfo";
+            return "members/profile/changeInfo";
         }
 
         Authentication auth =
@@ -101,7 +99,7 @@ public class ProfileController {
         } catch (Exception e) {
             log.error(e.toString());
             model.addAttribute("exception", e.getMessage());
-            return "/members/profile/changeInfo";
+            return "members/profile/changeInfo";
         }
 
         return "redirect:/mypage";
@@ -111,7 +109,7 @@ public class ProfileController {
     @GetMapping("/mypage/change-password")
     public String changePassword(Model model) {
         model.addAttribute("changePasswordRequest", new ChangePasswordRequest());
-        return "/members/profile/changePassword";
+        return "members/profile/changePassword";
     }
 
     @PostMapping("/mypage/change-password")
@@ -120,7 +118,7 @@ public class ProfileController {
         // todo: validation 로직 service 로 이동 필요
         if (result.hasErrors()) {
             log.error(result.getAllErrors().toString());
-            return "/members/profile/changePassword";
+            return "members/profile/changePassword";
         }
 
         Authentication auth
@@ -138,7 +136,7 @@ public class ProfileController {
             log.error(e.toString());
             model.addAttribute("exception", e.getMessage());
 
-            return "/members/profile/changePassword";
+            return "members/profile/changePassword";
         }
 
         return "redirect:/mypage/change-info";
@@ -148,7 +146,7 @@ public class ProfileController {
     @GetMapping("/mypage/delete")
     public String createDeleteForm(Model model) {
         model.addAttribute("deleteRequest", new DeleteRequest());
-        return "/members/profile/createDeleteForm";
+        return "members/profile/createDeleteForm";
     }
 
     @PostMapping("/mypage/delete")
@@ -167,12 +165,12 @@ public class ProfileController {
             } catch (Exception e) {
                 log.error(e.getMessage());
                 model.addAttribute("error", e.getMessage());
-                return "/members/profile/createDeleteForm";
+                return "members/profile/createDeleteForm";
             }
         } catch (Exception e) {
             log.error(e.getMessage());
             model.addAttribute("exception", e.getMessage());
-            return "/members/profile/createDeleteForm";
+            return "members/profile/createDeleteForm";
         }
 
         return "redirect:/";
